@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HolidayTracker.Models
 {
-    public class HolidayAllocation
+    public class HolidayAllowance: IEntity
     {
         [Key]
         public int ID { get; set; }

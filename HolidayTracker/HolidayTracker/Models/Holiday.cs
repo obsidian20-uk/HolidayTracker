@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HolidayTracker.Models
 {
-    public class Holiday
+    public class Holiday : IEntity
     {
         [Key]
         public int ID { get; set; }

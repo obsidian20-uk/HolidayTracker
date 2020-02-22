@@ -3,20 +3,25 @@ using Xamarin.Forms;
 using HolidayTracker.Views;
 using System.IO;
 using HolidayTracker.Services;
+using Microsoft.EntityFrameworkCore;
+using Ninject;
+using HolidayTracker.ViewModels;
+using System.Reflection;
 
 namespace HolidayTracker
 {
     public partial class App : Application
     {
-        public HolidayDatabaseContext holidayDatabaseContext = new HolidayDatabaseContext();
-
         public App()
         {
             InitializeComponent();
+            var settings = new Ninject.NinjectSettings() { LoadExtensions = false };
 
-            holidayDatabaseContext.Database.EnsureCreated();
+            var kernel = new StandardKernel(settings);
+            kernel.Load(Assembly.GetExecutingAssembly());
 
-            MainPage = new MainPage(holidayDatabaseContext);
+            //MainPage = kernel.Get<Page>("Main");
+            MainPage = new MainView();
         }
 
         protected override void OnStart()

@@ -6,19 +6,22 @@ using Xamarin.Forms;
 
 namespace HolidayTracker.Services
 {
-    public class HolidayDatabaseContext : DbContext
+    public class HolidayDatabaseContext : DbContext, IDatabaseContext
     {
 
-        private const string databaseName = "HolidayDB.db";
+        private const string databaseName = "HolidayTracker.db";
 
         public DbSet<Holiday> Holidays { get; set; }
-        public DbSet<HolidayAllocation> HolidayAllocations { get; set; }
+        public DbSet<HolidayAllowance> HolidayAllowances { get; set; }
 
         public HolidayDatabaseContext()
         {
         }
 
-
+        public void Initialise()
+        {
+            this.Database.EnsureCreated();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
