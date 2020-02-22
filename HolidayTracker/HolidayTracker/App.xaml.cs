@@ -20,8 +20,7 @@ namespace HolidayTracker
             var kernel = new StandardKernel(settings);
             kernel.Load(Assembly.GetExecutingAssembly());
 
-            //MainPage = kernel.Get<Page>("Main");
-            MainPage = new MainView();
+            MainPage = kernel.Get<Page>("Main");
         }
 
         protected override void OnStart()
