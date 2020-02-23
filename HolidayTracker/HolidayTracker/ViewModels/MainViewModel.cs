@@ -10,7 +10,15 @@ namespace HolidayTracker.ViewModels
 {
     class MainViewModel : Page, IViewModel
     {
+
+        public string Boo { get; set; } = "Hello";
+
         public MainViewModel()
+        {
+            Title = "Test";
+        }
+
+        public MainViewModel(IDatabaseContext data)
         {
             Title = "Test";
         }

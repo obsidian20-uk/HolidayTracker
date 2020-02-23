@@ -21,6 +21,8 @@ namespace HolidayTracker
             kernel.Load(Assembly.GetExecutingAssembly());
 
             MainPage = kernel.Get<Page>("Main");
+
+
         }
 
         protected override void OnStart()
