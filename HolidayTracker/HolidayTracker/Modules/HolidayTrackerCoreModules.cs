@@ -1,4 +1,5 @@
-﻿using HolidayTracker.Services;
+﻿using HolidayTracker.Models;
+using HolidayTracker.Services;
 using HolidayTracker.Views;
 using Ninject;
 using Ninject.Modules;
@@ -14,8 +15,8 @@ namespace HolidayTracker.Modules
         public override void Load()
         {
             Bind<IDatabaseContext>().To<HolidayDatabaseContext>();
-            Bind(typeof(IDataAccess<>)).To(typeof(HolidayDatabaseAccess)).Named("Holiday");
-            Bind(typeof(IDataAccess<>)).To(typeof(HolidayAllowanceDatabaseAccess)).Named("HolidayAllowance");
+            Bind<IDataAccess<Holiday>>().To<HolidayDatabaseAccess>();
+            Bind<IDataAccess<HolidayAllowance>>().To<HolidayAllowanceDatabaseAccess>();
             Bind<Page>().To<MainView>().Named("Main");
         }
     }

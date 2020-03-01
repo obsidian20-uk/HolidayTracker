@@ -3,6 +3,7 @@ using HolidayTracker.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,40 +11,47 @@ namespace HolidayTracker.Services
 {
     public class HolidayAllowanceDatabaseAccess : IDataAccess<HolidayAllowance>
     {
-        HolidayDatabaseContext _HolidayDatabaseContext;
+        HolidayDatabaseContext _holidayDatabaseContext;
 
         public HolidayAllowanceDatabaseAccess(HolidayDatabaseContext HolidayDatabaseContext)
         {
-            _HolidayDatabaseContext = HolidayDatabaseContext;
+            _holidayDatabaseContext = HolidayDatabaseContext;
         }
 
 
-        public async Task Delete(HolidayAllowance item)
+        public void Delete(HolidayAllowance item)
         {
-            _HolidayDatabaseContext.HolidayAllowances.Remove(item);
+            _holidayDatabaseContext.HolidayAllowances.Remove(item);
         }
 
-        public async Task<HolidayAllowance> Get(int ID)
+        public HolidayAllowance Get(int ID)
         {
-            return await _HolidayDatabaseContext.HolidayAllowances.FirstOrDefaultAsync(h => h.ID == ID);
+            return _holidayDatabaseContext.HolidayAllowances.FirstOrDefault(h => h.ID == ID);
         }
 
-        public async Task<IEnumerable<HolidayAllowance>> GetAll()
+        public IEnumerable<HolidayAllowance> GetAll()
         {
-            return await _HolidayDatabaseContext.HolidayAllowances.ToListAsync();
+            return _holidayDatabaseContext.HolidayAllowances.ToList();
         }
 
-        public async Task Upsert(Task<HolidayAllowance> item)
+        public HolidayAllowance GetByDate(DateTime dateTime)
         {
-            if (await _HolidayDatabaseContext.HolidayAllowances.AnyAsync(h => h.ID == item.Result.ID))
+            return _holidayDatabaseContext.HolidayAllowances.FirstOrDefault(h => h.Start <= dateTime && h.End >= dateTime);
+        }
+
+        public void Upsert(HolidayAllowance item)
+        {
+            if (_holidayDatabaseContext.HolidayAllowances.Any(h => h.ID == item.ID))
             {
-                var currentitem = _HolidayDatabaseContext.HolidayAllowances.FirstOrDefaultAsync(h => h.ID == item.Result.ID);
+                var currentitem = _holidayDatabaseContext.HolidayAllowances.FirstOrDefault(h => h.ID == item.ID);
                 currentitem = item;
             }
             else
             {
-                await _HolidayDatabaseContext.HolidayAllowances.AddAsync(item.Result);
+                _holidayDatabaseContext.HolidayAllowances.Add(item);
             }
         }
+
+
     }
 }

@@ -11,9 +11,35 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="Boo" Text="{Binding Boo}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="{Binding NumDaysUsed}"/>
+            <CollectionView x:Name="HolidaysView" ItemsSource="{Binding Holidays}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete" BackgroundColor="LightPink"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Path=Description}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                <Label Text="{Binding Path=Start}" Grid.Row="1" Grid.Column="0"/>
+                                <Label Text="{Binding Path=End}" Grid.Row="1" Grid.Column="1"/>
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

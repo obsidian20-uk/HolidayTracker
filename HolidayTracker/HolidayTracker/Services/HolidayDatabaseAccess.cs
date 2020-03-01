@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,32 +17,38 @@ namespace HolidayTracker.Services
             _holidayDatabaseContext = holidayDatabaseContext;
         }
 
-        public async Task Delete(Holiday item)
+        public void Delete(Holiday item)
         {
             _holidayDatabaseContext.Holidays.Remove(item);
         }
 
-        public async Task<Holiday> Get(int ID)
+        public Holiday Get(int ID)
         {
-            return await _holidayDatabaseContext.Holidays.FirstOrDefaultAsync(h => h.ID == ID);
+            return _holidayDatabaseContext.Holidays.FirstOrDefault(h => h.ID == ID);
         }
 
-        public async Task<IEnumerable<Holiday>> GetAll()
+        public IEnumerable<Holiday> GetAll()
         {
-            return await _holidayDatabaseContext.Holidays.ToListAsync();
+            return _holidayDatabaseContext.Holidays.ToList();
         }
 
-        public async Task Upsert(Task<Holiday> item)
+        public Holiday GetByDate(DateTime dateTime)
         {
-            if (await _holidayDatabaseContext.Holidays.AnyAsync(h => h.ID == item.Result.ID))
+            return _holidayDatabaseContext.Holidays.FirstOrDefault(h => h.Start <= dateTime && h.End >= dateTime);
+        }
+
+        public void Upsert(Holiday item)
+        {
+            if (_holidayDatabaseContext.Holidays.Any(h => h.ID == item.ID))
             {
-                var currentitem = _holidayDatabaseContext.Holidays.FirstOrDefaultAsync(h => h.ID == item.Result.ID);
+                var currentitem = _holidayDatabaseContext.Holidays.FirstOrDefault(h => h.ID == item.ID);
                 currentitem = item;
             }
             else
             {
-                await _holidayDatabaseContext.Holidays.AddAsync(item.Result);
+                _holidayDatabaseContext.Holidays.Add(item);
             }
+            _holidayDatabaseContext.SaveChanges();
         }
     }
 }

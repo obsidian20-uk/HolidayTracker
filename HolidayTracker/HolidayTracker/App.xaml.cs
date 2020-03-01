@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Ninject;
 using HolidayTracker.ViewModels;
 using System.Reflection;
+using HolidayTracker.Models;
+using System.Threading.Tasks;
 
 namespace HolidayTracker
 {
@@ -14,15 +16,11 @@ namespace HolidayTracker
     {
         public App()
         {
+            Global.kernel = Global.CreateKernel();
+
+            MainPage = Global.kernel.Get<Page>("Main");
+
             InitializeComponent();
-            var settings = new Ninject.NinjectSettings() { LoadExtensions = false };
-
-            var kernel = new StandardKernel(settings);
-            kernel.Load(Assembly.GetExecutingAssembly());
-
-            MainPage = kernel.Get<Page>("Main");
-
-
         }
 
         protected override void OnStart()

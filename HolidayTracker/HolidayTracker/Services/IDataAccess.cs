@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace HolidayTracker.Services
 {
-    public interface IDataAccess<TEntity>
+    public interface IDataAccess<IEntity>
     {
-        Task<IEnumerable<TEntity>> GetAll();
-        Task<TEntity> Get(int ID);
-        Task Upsert(Task<TEntity> item);
-        Task Delete(TEntity item);
+        IEnumerable<IEntity> GetAll();
+        IEntity Get(int ID);
+        IEntity GetByDate(DateTime dateTime);
+        void Upsert(IEntity item);
+        void Delete(IEntity item);
     }
 }

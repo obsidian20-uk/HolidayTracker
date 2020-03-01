@@ -51,7 +51,7 @@ namespace HolidayTracker.ViewModels
                 return;
             }
 
-            var viewName = viewType.FullName.Replace(".View.", ".ViewModel.");
+            var viewName = viewType.FullName.Replace("View", "ViewModel");
             var viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
             var viewModelName = string.Format(CultureInfo.InvariantCulture, "{0}, {1}", viewName, viewAssemblyName);
 

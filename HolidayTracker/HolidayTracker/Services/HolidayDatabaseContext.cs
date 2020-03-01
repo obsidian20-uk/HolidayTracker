@@ -16,6 +16,7 @@ namespace HolidayTracker.Services
 
         public HolidayDatabaseContext()
         {
+            Initialise();
         }
 
         public void Initialise()
