@@ -7,7 +7,7 @@
              x:Class="HolidayTracker.Views.MainView"
              xmlns:base="clr-namespace:HolidayTracker.ViewModels;assembly=HolidayTracker"
              base:ViewModelLocator.AutoWireViewModel="true"
-             Title="{Binding Title}">
+             Title="{Binding Title}" x:Name="MyMainView">
 
     <ContentPage.Content>
         <StackLayout>
@@ -17,10 +17,15 @@
                     <DataTemplate>
                         <SwipeView>
                             <SwipeView.LeftItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Delete" BackgroundColor="LightPink"/>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Delete Holiday" BackgroundColor="PaleVioletRed" Command="{Binding Path=BindingContext.DeleteHoliday, Source={x:Reference Name=MyMainView}}" CommandParameter="{Binding .}"/>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Edit" BackgroundColor="Yellow" Command="{Binding Path=BindingContext.EditHoliday, Source={x:Reference Name=MyMainView}}" CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
 
                             <Grid>
                                 <Grid.RowDefinitions>

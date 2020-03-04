@@ -18,10 +18,5 @@ namespace HolidayTracker.Models
         public DateTime Start { get; set; }
 
         public DateTime End { get; set; }
-
-        public static implicit operator Task<object>(Holiday v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

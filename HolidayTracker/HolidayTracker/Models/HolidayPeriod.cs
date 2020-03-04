@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HolidayTracker.Models
 {
-    public class HolidayAllowance: IEntity
+    public class HolidayPeriod: IEntity
     {
         [Key]
         public int ID { get; set; }
@@ -15,5 +15,6 @@ namespace HolidayTracker.Models
         public DateTime End { get; set; }
         public int NumDays { get; set; }
 
+        IEnumerable<Holiday> Holidays { get; set; }
     }
 }

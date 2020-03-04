@@ -12,7 +12,7 @@ namespace HolidayTracker.Services
         private const string databaseName = "HolidayTracker.db";
 
         public DbSet<Holiday> Holidays { get; set; }
-        public DbSet<HolidayAllowance> HolidayAllowances { get; set; }
+        public DbSet<HolidayPeriod> HolidayPeriods { get; set; }
 
         public HolidayDatabaseContext()
         {
@@ -29,18 +29,20 @@ namespace HolidayTracker.Services
             String databasePath = "";
             switch (Device.RuntimePlatform)
             {
-                case Device.iOS:
-                    SQLitePCL.Batteries_V2.Init();
-                    databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", databaseName); ;
-                    break;
                 case Device.Android:
-                    databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), databaseName);
+                    var sqlitePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"OlsonSoftware\FinanceManager");
+                    Directory.CreateDirectory(sqlitePath);
+                    var fileName = $"{sqlitePath}\\{databaseName}";
+                    if (!File.Exists(fileName))
+                    {
+                        File.Create(fileName);
+                    }
+                    optionsBuilder.UseSqlite($"Data Source={fileName}");
                     break;
                 default:
                     throw new NotImplementedException("Platform not supported");
+                    break;
             }
-            // Specify that we will use sqlite and the path of the database here
-            optionsBuilder.UseSqlite($"Filename={databasePath}");
         }
     }
 }
