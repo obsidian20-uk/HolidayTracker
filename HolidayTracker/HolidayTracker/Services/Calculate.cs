@@ -22,12 +22,12 @@ namespace HolidayTracker.Services
 
         public static int PercentageUsed(IEnumerable<Holiday> holidays, HolidayPeriod holidayPeriod)
         {
-            return holidayPeriod.NumDays / DaysUsed(holidays);
+            return holidayPeriod.NumHolidays / DaysUsed(holidays);
         }
 
         public static int DaysRemaining(IEnumerable<Holiday> holidays, HolidayPeriod holidayPeriod)
         {
-            return holidayPeriod.NumDays - DaysUsed(holidays);
+            return holidayPeriod.NumHolidays - DaysUsed(holidays);
         }
 
         public static int DaysSinceLastHoliday(IEnumerable<Holiday> holidays)

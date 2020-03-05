@@ -17,11 +17,9 @@ namespace HolidayTracker.ViewModels
     {
 
         public ObservableCollection<Holiday> Holidays { get; set; }
-        public HolidayPeriod CurrentHolidayAllowance { get; set; }
+        public HolidayPeriod CurrentHolidayPeriod { get; set; }
 
-        IDataAccess<Holiday> holidayDatabaseAccess;
-
-        IDataAccess<HolidayPeriod> holidayAllowanceDatabaseAccess;
+        IDataAccessService _DataAccessService;
 
         public int NumDaysUsed { get; set; }
 
@@ -31,25 +29,21 @@ namespace HolidayTracker.ViewModels
 
         public MainViewModel()
         {
-            holidayDatabaseAccess = Global.kernel.Get<IDataAccess<Holiday>>();
-            holidayAllowanceDatabaseAccess = Global.kernel.Get<IDataAccess<HolidayPeriod>>();
-            
-            CurrentHolidayAllowance = holidayAllowanceDatabaseAccess.GetByDate(DateTime.Now);
-            Holidays = holidayDatabaseAccess.GetAllInPeriod(CurrentHolidayAllowance);
-            UpdateData();
-            Holidays.CollectionChanged += Holidays_Changed;
             Title = "Holiday Tracker";
-            DeleteHoliday = new Command<Holiday>(holiday => holidayDatabaseAccess.Delete(holiday));
+            DeleteHoliday = new Command<Holiday>(holiday => _DataAccessService.DeleteHoliday(holiday));
+            _DataAccessService.DataUpdate += Data_Changed;
+            UpdateScreen();
         }
 
-        private void Holidays_Changed(object sender, NotifyCollectionChangedEventArgs e)
+        private void Data_Changed(object sender, EventArgs e)
         {
-            UpdateData();
+            UpdateScreen();
         }
 
-        private void UpdateData()
+        private void UpdateScreen()
         {
-            NumDaysUsed = Calculate.DaysUsed(Holidays.ToList());
+            NumDaysUsed = Calculate.DaysUsed(CurrentHolidayPeriod.Holidays.ToList());
+            Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID));
         }
 
         public bool IsBusy { get; set; }

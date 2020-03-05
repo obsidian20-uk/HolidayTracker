@@ -1,6 +1,7 @@
 ﻿using HolidayTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Xamarin.Forms;
 
@@ -13,6 +14,7 @@ namespace HolidayTracker.Services
 
         public DbSet<Holiday> Holidays { get; set; }
         public DbSet<HolidayPeriod> HolidayPeriods { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         public HolidayDatabaseContext()
         {
@@ -43,6 +45,16 @@ namespace HolidayTracker.Services
                     throw new NotImplementedException("Platform not supported");
                     break;
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
+
+        public void Save()
+        {
+            this.SaveChanges();
         }
     }
 }

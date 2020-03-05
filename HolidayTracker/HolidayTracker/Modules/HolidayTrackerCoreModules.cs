@@ -15,8 +15,7 @@ namespace HolidayTracker.Modules
         public override void Load()
         {
             Bind<IDatabaseContext>().To<HolidayDatabaseContext>();
-            Bind<IDataAccess<Holiday>>().To<HolidayDatabaseAccess>();
-            Bind<IDataAccess<HolidayPeriod>>().To<HolidayPeriodDatabaseAccess>();
+            Bind<IDataAccessService>().To<EFDataAccessService>();
             Bind<Page>().To<MainView>().Named("Main");
         }
     }

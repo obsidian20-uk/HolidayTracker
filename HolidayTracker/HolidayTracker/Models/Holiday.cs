@@ -11,7 +11,9 @@ namespace HolidayTracker.Models
         [Key]
         public int ID { get; set; }
 
-        public int HolidayAllowancePeriod { get; set; }
+        public Guid WholeHolidayGuid { get; set; }
+
+        public bool Split { get; set; }
 
         public string Description { get; set; }
 

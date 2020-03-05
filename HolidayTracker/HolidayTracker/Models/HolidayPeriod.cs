@@ -13,8 +13,8 @@ namespace HolidayTracker.Models
         public DateTime Start { get; set; }
 
         public DateTime End { get; set; }
-        public int NumDays { get; set; }
+        public int NumHolidays { get; set; }
 
-        IEnumerable<Holiday> Holidays { get; set; }
+        public List<Holiday> Holidays { get; set; }
     }
 }
