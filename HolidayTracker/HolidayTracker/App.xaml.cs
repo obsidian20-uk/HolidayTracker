@@ -18,7 +18,7 @@ namespace HolidayTracker
         {
             Global.kernel = Global.CreateKernel();
 
-            MainPage = Global.kernel.Get<Page>("Main");
+            MainPage = Global.kernel.Get<MasterDetailPage>("Main");
 
             InitializeComponent();
         }

@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace HolidayTracker.ViewModels
 {
-    public interface IViewModel
+    public interface IViewModel: INotifyPropertyChanged
     {
         bool IsBusy { get; set; }
         string Title { get; set; }

@@ -19,7 +19,7 @@ namespace HolidayTracker.Services
 
         }
 
-        public event DataAccessEventHandler DataUpdate;
+        public event EventHandler DataUpdate;
 
         public IEnumerable<Holiday> GetAll()
         {
@@ -33,17 +33,20 @@ namespace HolidayTracker.Services
 
         public IEnumerable<Holiday> GetHolidaysInPeriod(int holidayPeriodID)
         {
-            return _context.HolidayPeriods.FirstOrDefault(hp => hp.ID == holidayPeriodID).Holidays;
+            return _context.HolidayPeriods.Include(hp => hp.Holidays).FirstOrDefault(hp => hp.ID == holidayPeriodID).Holidays;
         }
 
         public void CreateHoliday(Holiday holiday)
         {
-
             var firstHolidayPeriod = _context.HolidayPeriods.OrderByDescending(hp => hp.Start).FirstOrDefault(hp => hp.Start < holiday.Start);
+            if (firstHolidayPeriod.Holidays == null)
+            {
+                firstHolidayPeriod.Holidays = new List<Holiday>();
+            }
             if (holiday.End > firstHolidayPeriod.End)
             {
                 var nextHolidayPeriod = _context.HolidayPeriods.OrderByDescending(hp => hp.Start).FirstOrDefault(hp => hp.End >= holiday.Start);
-
+                nextHolidayPeriod.Holidays = new List<Holiday>();
                 var holpt1 = new Holiday()
                 {
                     Description = holiday.Description,
@@ -83,7 +86,6 @@ namespace HolidayTracker.Services
             {
                 foreach (var holidayPeriod in _context.HolidayPeriods.Where(hp => hp.Start > startHolidayPeriod.End))
                 {
-                    _context.HolidayPeriods.Attach(holidayPeriod);
                     if (holiday.End < holidayPeriod.Start)
                     {
                         holidayPeriod.Holidays.RemoveAll(h => h.WholeHolidayGuid == holiday.WholeHolidayGuid);
@@ -134,6 +136,15 @@ namespace HolidayTracker.Services
             OnDataUpdate(EventArgs.Empty);
         }
 
+        public HolidayPeriod GetHolidayPeriod(DateTime date)
+        {
+            if (!_context.HolidayPeriods.Any(hp => hp.Start <= date && hp.End > date))
+            {
+                CreateHolidayPeriod();
+            }
+            return _context.HolidayPeriods.Include(hp => hp.Holidays).FirstOrDefault(hp => hp.Start <= date && hp.End >= date);
+        }
+
         public HolidayPeriod GetHolidayPeriod(int id)
         {
             if (!_context.HolidayPeriods.Any(hp => hp.ID == id))
@@ -160,14 +171,26 @@ namespace HolidayTracker.Services
 
         public void CreateHolidayPeriod()
         {
+            DateTime NewPeriodStart;
+            DateTime NewPeriodEnd;
+
             var previousHolidayPeriod = _context.HolidayPeriods.OrderBy(hp => hp.End).LastOrDefault();
-            var NewPeriodStart = previousHolidayPeriod.End.AddDays(1);
-            var newPeriodEnd = previousHolidayPeriod.End.AddDays(Convert.ToInt32(GetSetting("PeriodLength").Value));
+            if (previousHolidayPeriod == null)
+            {
+                NewPeriodStart = new DateTime(DateTime.Now.Year, 1, 1);
+                NewPeriodEnd = new DateTime(DateTime.Now.Year, 12, 31);
+            }
+            else
+            {
+                NewPeriodStart = previousHolidayPeriod.End.AddDays(1);
+                NewPeriodEnd = previousHolidayPeriod.End.AddDays(Convert.ToInt32(GetSetting("PeriodLength").Value));
+
+            }
             _context.HolidayPeriods.Add(new HolidayPeriod()
             {
                 Start = NewPeriodStart,
-                End = newPeriodEnd,
-                NumHolidays = Convert.ToInt32(GetSetting("NumHolidays").Value)
+                End = NewPeriodEnd,
+                NumHolidays = 25
             });
             OnDataUpdate(EventArgs.Empty);
         }
@@ -199,7 +222,6 @@ namespace HolidayTracker.Services
             var FirstHolidaysPeriod = _context.HolidayPeriods.FirstOrDefault(hp => hp.Holidays.Any(h => h.WholeHolidayGuid == holiday.WholeHolidayGuid));
             foreach (var holidayPeriod in _context.HolidayPeriods)
             {
-                _context.HolidayPeriods.Attach(holidayPeriod);
                 holidayPeriod.Holidays.RemoveAll(h => h.WholeHolidayGuid == holiday.WholeHolidayGuid);
             }
             OnDataUpdate(EventArgs.Empty);
@@ -213,6 +235,19 @@ namespace HolidayTracker.Services
             {
                 handler(this, e);
             }
+        }
+
+        public void CreateTestData()
+        {
+            var hol = new Holiday()
+            {
+                Description = "Test",
+                Start = DateTime.Now,
+                End = DateTime.Now.AddDays(5),
+                Split = false,
+                WholeHolidayGuid = new Guid()
+            };
+            CreateHoliday(hol);
         }
 
 

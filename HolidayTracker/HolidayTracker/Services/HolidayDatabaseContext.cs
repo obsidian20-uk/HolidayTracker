@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace HolidayTracker.Services
@@ -32,7 +33,7 @@ namespace HolidayTracker.Services
             switch (Device.RuntimePlatform)
             {
                 case Device.Android:
-                    var sqlitePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"OlsonSoftware\FinanceManager");
+                    var sqlitePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"ObsidianSoftware\HolidayTracker");
                     Directory.CreateDirectory(sqlitePath);
                     var fileName = $"{sqlitePath}\\{databaseName}";
                     if (!File.Exists(fileName))
@@ -49,7 +50,9 @@ namespace HolidayTracker.Services
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<HolidayPeriod>()
+            .HasMany(hp => hp.Holidays)
+            .WithOne();
         }
 
         public void Save()

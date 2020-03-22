@@ -16,7 +16,8 @@ namespace HolidayTracker.Modules
         {
             Bind<IDatabaseContext>().To<HolidayDatabaseContext>();
             Bind<IDataAccessService>().To<EFDataAccessService>();
-            Bind<Page>().To<MainView>().Named("Main");
+            Bind<MasterDetailPage>().To<MainView>().Named("Main");
+            Bind<ContentPage>().To<HolidaysView>().Named("HolidayList");
         }
     }
 }

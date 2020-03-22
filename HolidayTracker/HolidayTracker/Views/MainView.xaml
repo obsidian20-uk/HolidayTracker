@@ -1,50 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="HolidayTracker.Views.MainView"
+             xmlns:pages="clr-namespace:HolidayTracker.Views"
              xmlns:base="clr-namespace:HolidayTracker.ViewModels;assembly=HolidayTracker"
-             base:ViewModelLocator.AutoWireViewModel="true"
-             Title="{Binding Title}" x:Name="MyMainView">
-
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="{Binding NumDaysUsed}"/>
-            <CollectionView x:Name="HolidaysView" ItemsSource="{Binding Holidays}" SelectionMode="Single">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.LeftItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="Delete Holiday" BackgroundColor="PaleVioletRed" Command="{Binding Path=BindingContext.DeleteHoliday, Source={x:Reference Name=MyMainView}}" CommandParameter="{Binding .}"/>
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <SwipeView.RightItems>
-                                <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="Edit" BackgroundColor="Yellow" Command="{Binding Path=BindingContext.EditHoliday, Source={x:Reference Name=MyMainView}}" CommandParameter="{Binding .}"/>
-                                </SwipeItems>
-                            </SwipeView.RightItems>
-
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Path=Description}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                <Label Text="{Binding Path=Start}" Grid.Row="1" Grid.Column="0"/>
-                                <Label Text="{Binding Path=End}" Grid.Row="1" Grid.Column="1"/>
-                            </Grid>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-            </CollectionView>
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+             base:ViewModelLocator.AutoWireViewModel="true">
+  <MasterDetailPage.Master>
+        <pages:MainMasterView x:Name="MasterPage" />
+  </MasterDetailPage.Master>
+  <MasterDetailPage.Detail>
+    <NavigationPage>
+      <x:Arguments>
+        <pages:HolidaysView />
+      </x:Arguments>
+    </NavigationPage>
+  </MasterDetailPage.Detail>
+</MasterDetailPage>
