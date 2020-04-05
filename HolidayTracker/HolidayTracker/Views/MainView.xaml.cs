@@ -19,6 +19,13 @@ namespace HolidayTracker.Views
             MasterPage.ListView.ItemSelected += ListView_ItemSelected;
         }
 
+        public MainView(Page page)
+        {
+            InitializeComponent();
+            MasterPage.ListView.ItemSelected += ListView_ItemSelected;
+            Detail = new NavigationPage(page);
+        }
+
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as MainMenuItem;

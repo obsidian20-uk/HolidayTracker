@@ -17,6 +17,8 @@ namespace HolidayTracker.Services
         public DbSet<HolidayPeriod> HolidayPeriods { get; set; }
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<PublicHoliday> PublicHolidays { get; set; }
+
         public HolidayDatabaseContext()
         {
             Initialise();
@@ -58,6 +60,14 @@ namespace HolidayTracker.Services
         public void Save()
         {
             this.SaveChanges();
+        }
+
+        /// <summary>
+        /// Only used for testing. Will wipe whole database
+        /// </summary>
+        public void Reset()
+        {
+            this.Database.EnsureDeleted();
         }
     }
 }

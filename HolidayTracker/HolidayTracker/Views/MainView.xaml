@@ -14,8 +14,8 @@
   <MasterDetailPage.Detail>
     <NavigationPage>
       <x:Arguments>
-        <pages:HolidaysView />
-      </x:Arguments>
+                <pages:HolidaysView />
+            </x:Arguments>
     </NavigationPage>
   </MasterDetailPage.Detail>
 </MasterDetailPage>

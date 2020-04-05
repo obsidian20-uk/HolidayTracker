@@ -14,7 +14,7 @@ namespace HolidayTracker.Services
             var DaysCount = 0;
             foreach (var holiday in holidays)
             {
-                DaysCount += holiday.End.Subtract(holiday.Start).Duration().Days + 1;
+                DaysCount += holiday.NumDays;
             }
 
             return DaysCount;
@@ -38,6 +38,34 @@ namespace HolidayTracker.Services
         public static int DaysToNextHoliday(IEnumerable<Holiday> holidays)
         {
             return holidays.OrderBy(h => h.Start).FirstOrDefault(h => h.Start > DateTime.Now).Start.Subtract(DateTime.Now).Days;
+        }
+
+        public static int NumDaysInHoliday(DateTime start, DateTime end, List<PublicHoliday> publicHolidays, bool WorkWeekends = false, bool WorkPublicHolidays = false)
+        {
+            List<DateTime> dates = new List<DateTime>();
+            int NumWeekendDays = 0;
+            int NumPublicHolidays = 0;
+
+            for (DateTime i = start; i < end; i = i.AddDays(1))
+            {
+                dates.Add(i);
+            }
+
+            int NumDays = dates.Count;
+
+            if (!WorkWeekends)
+            {
+                NumWeekendDays = dates.Where(d => d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday).Count();
+                NumDays -= NumWeekendDays;
+            }
+
+            if (!WorkPublicHolidays)
+            {
+                NumPublicHolidays = publicHolidays.Count(ph => ph.Date >= start && ph.Date <= end);
+                NumDays -= NumPublicHolidays;
+            }
+
+            return NumDays;
         }
     }
 }

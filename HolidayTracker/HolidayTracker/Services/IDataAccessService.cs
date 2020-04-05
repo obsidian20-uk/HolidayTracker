@@ -22,5 +22,7 @@ namespace HolidayTracker.Services
         void UpsertSetting(string Key, string Value);
 
         void CreateTestData();
+
+        void Setup();
     }
 }

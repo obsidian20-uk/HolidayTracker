@@ -9,20 +9,41 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Xamarin.Forms;
 
 namespace HolidayTracker.ViewModels
 {
-    class HolidaysViewModel : ContentPage, IViewModel
+    class HolidaysViewModel : ContentPage, IViewModel, INotifyPropertyChanged
     {
+        private ObservableCollection<Holiday> holidays;
+        private int numDaysUsed;
 
-        public ObservableCollection<Holiday> Holidays { get; set; }
+        public string currentHolidayPeriodText { get; set; }
+
+        public ObservableCollection<Holiday> Holidays
+        {
+            get => holidays;
+            set
+            {
+                holidays = value;
+                OnPropertyChanged();
+            }
+        }
         public HolidayPeriod CurrentHolidayPeriod { get; set; }
 
         public IDataAccessService _DataAccessService { get; set; }
 
-        public int NumDaysUsed { get; set; }
+        public int NumDaysUsed
+        {
+            get => numDaysUsed;
+            set
+            {
+                numDaysUsed = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Command<Holiday> DeleteHoliday { get; set; }
 
@@ -31,12 +52,14 @@ namespace HolidayTracker.ViewModels
         public HolidaysViewModel(IDataAccessService DataAccessService)
         {
             Title = "Holiday Tracker";
-            DeleteHoliday = new Command<Holiday>(holiday => _DataAccessService.DeleteHoliday(holiday));
             _DataAccessService = DataAccessService;
+            DeleteHoliday = new Command<Holiday>(holiday => _DataAccessService.DeleteHoliday(holiday));
+            _DataAccessService.Setup();
             CurrentHolidayPeriod = _DataAccessService.GetHolidayPeriod(DateTime.Now);
             _DataAccessService.DataUpdate += Data_Changed;
-            //_DataAccessService.CreateTestData();
+            Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID));
             UpdateScreen();
+            currentHolidayPeriodText = CurrentHolidayPeriod.ToString();
         }
 
         private void Data_Changed(object sender, EventArgs e)
@@ -54,5 +77,12 @@ namespace HolidayTracker.ViewModels
         public string Title { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        // Create the OnPropertyChanged method to raise the event
+        // The calling member's name will be used as the parameter.
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

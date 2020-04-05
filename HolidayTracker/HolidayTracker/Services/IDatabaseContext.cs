@@ -11,8 +11,15 @@ namespace HolidayTracker.Services
 
         DbSet<Setting> Settings { get; set; }
 
+        DbSet<PublicHoliday> PublicHolidays { get; set; }
+
         void Save();
 
         void Initialise();
+
+        /// <summary>
+        /// Only used for testing. Will wipe whole database
+        /// </summary>
+        void Reset();
     }
 }

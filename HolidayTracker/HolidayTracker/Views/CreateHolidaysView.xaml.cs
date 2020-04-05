@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,15 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace HolidayTracker.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainMasterView : ContentPage
+    public partial class CreateHolidaysView : ContentPage
     {
-        public ListView ListView;
-        private ContentPage Page;
-
-        public MainMasterView()
+        public CreateHolidaysView()
         {
             InitializeComponent();
-            ListView = MenuItemsListView;
         }
     }
 }

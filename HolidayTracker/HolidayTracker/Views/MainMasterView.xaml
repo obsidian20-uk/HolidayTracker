@@ -15,11 +15,10 @@
               ItemsSource="{Binding MenuItems}">
       <d:ListView.ItemsSource>
           <x:Array Type="{x:Type x:String}">
-              <x:String>Page 1</x:String>
-              <x:String>Page 2</x:String>
-              <x:String>Page 3</x:String>
-              <x:String>Page 4</x:String>
-              <x:String>Page 5</x:String>
+              <x:String>Holidays List</x:String>
+              <x:String>Add New Holiday</x:String>
+              <x:String>Change Holiday Period</x:String>
+              <x:String>Settings</x:String>
           </x:Array>
       </d:ListView.ItemsSource>
       <ListView.Header>

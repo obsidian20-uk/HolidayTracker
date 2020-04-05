@@ -9,8 +9,9 @@
              base:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title}" x:Name="MyHolidaysView">
   <StackLayout Padding="10">
+        <Label TextColor="Green" FontSize="20" Text="{Binding currentHolidayPeriodText}"/>
         <Label Text="{Binding NumDaysUsed}"/>
-        <CollectionView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays}" SelectionMode="Single">
+        <CollectionView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays, Mode=TwoWay}" SelectionMode="Single">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <SwipeView>
@@ -24,20 +25,27 @@
                                 <SwipeItem Text="Edit" BackgroundColor="Yellow" Command="{Binding Path=BindingContext.EditHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
                             </SwipeItems>
                         </SwipeView.RightItems>
-
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="1"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="1"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Path=Description}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-                            <Label Text="{Binding Path=Start}" Grid.Row="1" Grid.Column="0"/>
-                            <Label Text="{Binding Path=End}" Grid.Row="1" Grid.Column="1"/>
+                            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Black" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                            <Label Text="{Binding Path=Description}" Grid.Row="1" Grid.Column="1"/>
+                            <Label Text="{Binding Path=HolidayDates}" Grid.Row="2" Grid.Column="1"/>
+                            <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Black" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                            <BoxView Grid.Column="0" Grid.Row="0" Grid.RowSpan="4"  BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                            <BoxView Grid.Column="2" Grid.Row="0" Grid.RowSpan="4"  BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
                         </Grid>
+
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

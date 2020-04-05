@@ -15,6 +15,22 @@ namespace HolidayTracker.Models
         public DateTime End { get; set; }
         public int NumHolidays { get; set; }
 
-        public List<Holiday> Holidays { get; set; }
+        public List<Holiday> Holidays { get; set; } = new List<Holiday>();
+
+        public string ToString()
+        {
+            if (End.Subtract(Start).Days > 360)
+            {
+                if (Start.Year == End.Year)
+                {
+                    return $"Holiday Year: {Start.Year}";
+                }
+                return $"Holiday Year: {Start.Year} / {End.Year}";
+            }
+            else
+            {
+                return $"Holiday Year: {Start.Date} to {End.Date}";
+            }
+        }
     }
 }
