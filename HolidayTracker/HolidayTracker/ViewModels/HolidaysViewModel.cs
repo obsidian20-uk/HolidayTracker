@@ -1,8 +1,10 @@
 ﻿using HolidayTracker.Models;
 using HolidayTracker.Modules;
 using HolidayTracker.Services;
+using HolidayTracker.Views;
 using Microsoft.EntityFrameworkCore;
 using Ninject;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -54,12 +56,18 @@ namespace HolidayTracker.ViewModels
             Title = "Holiday Tracker";
             _DataAccessService = DataAccessService;
             DeleteHoliday = new Command<Holiday>(holiday => _DataAccessService.DeleteHoliday(holiday));
+            EditHoliday = new Command<Holiday>(holiday => UpdateHoliday(holiday));
             _DataAccessService.Setup();
             CurrentHolidayPeriod = _DataAccessService.GetHolidayPeriod(DateTime.Now);
             _DataAccessService.DataUpdate += Data_Changed;
             Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID));
             UpdateScreen();
             currentHolidayPeriodText = CurrentHolidayPeriod.ToString();
+        }
+
+        private async void UpdateHoliday(Holiday holiday)
+        {
+            await PopupNavigation.PushAsync(new EditHolidaysView(holiday));
         }
 
         private void Data_Changed(object sender, EventArgs e)

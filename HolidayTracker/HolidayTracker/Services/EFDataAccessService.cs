@@ -264,9 +264,7 @@ namespace HolidayTracker.Services
 
         public void CreateTestData()
         {
-            UpsertSetting("PeriodLength", "365");
-            UpsertSetting("WorkWeekends", "False");
-            UpsertSetting("WorkPublicHolidays", "False");
+            Setup();
             _context.HolidayPeriods.RemoveRange(_context.HolidayPeriods);
             CreateHolidayPeriod();
             var hol = new Holiday()
