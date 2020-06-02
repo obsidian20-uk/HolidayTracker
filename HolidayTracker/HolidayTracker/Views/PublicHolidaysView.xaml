@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="HolidayTracker.Views.PublicHolidaysView"
+             xmlns:base="clr-namespace:HolidayTracker.ViewModels;assembly=HolidayTracker"
+             base:ViewModelLocator.AutoWireViewModel="true"
+             Title="{Binding Title}" x:Name="MyHolidaysView">
+    <ContentPage.Resources>
+        <Color x:Key="DarkButtonBackground">#921813</Color>
+        <Style x:Key="FABPrimary" TargetType="Button">
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="BackgroundColor" Value="{StaticResource DarkButtonBackground}"/>
+            <Setter Property="HeightRequest" Value="55"/>
+            <Setter Property="WidthRequest" Value="55"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+    </ContentPage.Resources>
+    <StackLayout Padding="10">
+        <ListView x:Name="HolidaysCollectionView" ItemsSource="{Binding PublicHolidays, Mode=OneTime}" SelectionMode="None"  RowHeight="60">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                    <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=DateDisplay}">
+                    </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+</ContentPage>

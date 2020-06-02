@@ -4,24 +4,44 @@ using HolidayTracker.Views;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Xamarin.Forms;
 
 namespace HolidayTracker.ViewModels
 {
-    public class EditHolidaysViewModel : ContentPage, IViewModel
+    public class EditHolidaysViewModel : ContentPage, IViewModel, INotifyPropertyChanged
     {
         [Inject]
         public IDataAccessService _DataAccessService { get; set; }
 
         public Command<Holiday> EditHolidayCommand { get; set; }
 
-        public Holiday Holiday { get; set; } = new Holiday();
+        private Holiday _holiday;
 
-        public EditHolidaysViewModel(Holiday holiday)
+        public Holiday Holiday
         {
-            Holiday = holiday;
+            get
+            {
+                return _holiday;
+            }
+            set
+            {
+                _holiday = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public EditHolidaysViewModel()
+        {
+            MessagingCenter.Subscribe<Holiday>(this, "EditHol", (holiday) =>
+            {
+                Holiday = holiday;
+            });
             EditHolidayCommand = new Command<Holiday>(h => UpdateHoliday(Holiday));
+            Title = "Holiday Tracker - Edit Holiday";
+
         }
 
         public void UpdateHoliday(Holiday holiday)
@@ -31,6 +51,15 @@ namespace HolidayTracker.ViewModels
             //mdp.Detail..PopAsync();
 
             App.Current.MainPage = new MainView(new HolidaysView());
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Create the OnPropertyChanged method to raise the event
+        // The calling member's name will be used as the parameter.
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

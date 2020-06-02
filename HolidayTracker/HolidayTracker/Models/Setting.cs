@@ -5,6 +5,13 @@ using System.Text;
 
 namespace HolidayTracker.Models
 {
+    public enum DataType
+    {
+        text,
+        number,
+        truefalse
+    }
+
     public class Setting
     {
         [Key]

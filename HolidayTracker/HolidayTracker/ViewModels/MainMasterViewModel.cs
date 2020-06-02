@@ -19,8 +19,9 @@ namespace HolidayTracker.ViewModels
             MenuItems = new ObservableCollection<MainMenuItem>(new[]
             {
                     new MainMenuItem { Id = 0, Title = "View Holidays", TargetType=typeof(HolidaysView)},
-                    new MainMenuItem { Id = 1, Title = "Create New Holiday", TargetType=typeof(CreateHolidaysView)},
-                    new MainMenuItem { Id = 2, Title = "Change Holiday Period" },
+                    new MainMenuItem { Id = 2, Title = "Holiday Periods", TargetType=typeof(HolidayPeriodView) },
+                    new MainMenuItem { Id = 4, Title = "Public Holidays", TargetType=typeof(PublicHolidaysView) },
+                    new MainMenuItem { Id = 4, Title = "Settings", TargetType=typeof(SettingsView) },
                 });
         }
 

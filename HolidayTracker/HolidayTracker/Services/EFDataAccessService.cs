@@ -43,8 +43,9 @@ namespace HolidayTracker.Services
 
             var newHolidayGUID = Guid.NewGuid();
 
-            var WorkWeekends = Convert.ToBoolean(GetSetting("WorkWeekends").Value);
-            var WorkPublicHolidays = Convert.ToBoolean(GetSetting("WorkPublicHolidays").Value);
+            var WorkWeekends = bool.Parse(GetSetting("WorkWeekends"));
+            var WorkPublicHolidays = bool.Parse(GetSetting("WorkPublicHolidays"));
+
 
             if (firstHolidayPeriod.Holidays == null)
             {
@@ -61,7 +62,7 @@ namespace HolidayTracker.Services
                     End = firstHolidayPeriod.End,
                     WholeHolidayGuid = newHolidayGUID,
                     NumDays = Calculate.NumDaysInHoliday(holiday.Start, firstHolidayPeriod.End, publicHolidays, WorkWeekends, WorkPublicHolidays),
-                Split = true
+                    Split = true
                 };
                 var holpt2 = new Holiday()
                 {
@@ -88,10 +89,10 @@ namespace HolidayTracker.Services
         {
             var publicHolidays = _context.PublicHolidays.Where(ph => ph.Date >= holiday.Start && ph.Date <= holiday.End).ToList();
 
-            var WorkWeekends = Convert.ToBoolean(GetSetting("WorkWeekends").Value);
-            var WorkPublicHolidays = Convert.ToBoolean(GetSetting("WorkPublicHolidays").Value);
+            var WorkWeekends = bool.Parse(GetSetting("WorkWeekends"));
+            var WorkPublicHolidays = bool.Parse(GetSetting("WorkPublicHolidays"));
 
-            var startHolidayPeriod = _context.HolidayPeriods.OrderByDescending(hp => hp.Start).FirstOrDefault(hp => hp.Start < holiday.Start);
+            var startHolidayPeriod = _context.HolidayPeriods.Include(hp => hp.Holidays).OrderByDescending(hp => hp.Start).FirstOrDefault(hp => hp.Start < holiday.Start);
 
             if (!holiday.Split && holiday.End > startHolidayPeriod.End)
             {
@@ -123,7 +124,7 @@ namespace HolidayTracker.Services
                                 End = holiday.End,
                                 WholeHolidayGuid = holiday.WholeHolidayGuid,
                                 NumDays = Calculate.NumDaysInHoliday(holidayPeriod.Start, holiday.End, publicHolidays, WorkWeekends, WorkPublicHolidays),
-                            Split = true
+                                Split = true
                             };
                             holidayPeriod.Holidays.Add(holpt2);
                         }
@@ -158,19 +159,25 @@ namespace HolidayTracker.Services
 
         public HolidayPeriod GetHolidayPeriod(DateTime date)
         {
-            if (!_context.HolidayPeriods.Any(hp => hp.Start <= date && hp.End > date))
+            if (Global.CurrentHolidayPeriod == null)
             {
-                CreateHolidayPeriod();
+                Global.CurrentHolidayPeriod = _context.HolidayPeriods.Include(hp => hp.Holidays).FirstOrDefault(hp => hp.Start <= date && hp.End >= date);
             }
-            return _context.HolidayPeriods.Include(hp => hp.Holidays).FirstOrDefault(hp => hp.Start <= date && hp.End >= date);
+            return Global.CurrentHolidayPeriod;
+        }
+
+        public bool CheckForHolidayPeriodOverlap(HolidayPeriod possibleHolidayPeriod)
+        {
+            foreach (var holidayPeriod in _context.HolidayPeriods)
+            {
+                if ((holidayPeriod.Start < possibleHolidayPeriod.Start && holidayPeriod.End > possibleHolidayPeriod.Start) || (holidayPeriod.Start < possibleHolidayPeriod.End && holidayPeriod.End > possibleHolidayPeriod.End))
+                    return true;
+            }
+            return false;
         }
 
         public HolidayPeriod GetHolidayPeriod(int id)
         {
-            if (!_context.HolidayPeriods.Any(hp => hp.ID == id))
-            {
-                CreateHolidayPeriod();
-            }
             return _context.HolidayPeriods.FirstOrDefault(hp => hp.ID == id);
         }
 
@@ -178,7 +185,7 @@ namespace HolidayTracker.Services
         {
             if (PeriodNumHolidays == 0)
             {
-                PeriodNumHolidays = Convert.ToInt32(GetSetting("NumHolidays").Value);
+                PeriodNumHolidays = Convert.ToInt32(GetSetting("NumHolidays"));
             }
             _context.HolidayPeriods.Add(new HolidayPeriod()
             {
@@ -189,8 +196,16 @@ namespace HolidayTracker.Services
             OnDataUpdate(EventArgs.Empty);
         }
 
+        public void CreateHolidayPeriod(HolidayPeriod newHolidayPeriod)
+        {
+            _context.HolidayPeriods.Add(newHolidayPeriod);
+            OnDataUpdate(EventArgs.Empty);
+        }
+
         public void CreateHolidayPeriod()
         {
+            var StartMonth = Convert.ToInt32(GetSetting("HolidayPeriodStart"));
+            int EndMonth;
             DateTime NewPeriodStart;
             DateTime NewPeriodEnd;
 
@@ -199,12 +214,24 @@ namespace HolidayTracker.Services
             {
                 previousHolidayPeriod = _context.HolidayPeriods.OrderBy(hp => hp.End).Last();
                 NewPeriodStart = previousHolidayPeriod.End.AddDays(1);
-                NewPeriodEnd = previousHolidayPeriod.End.AddDays(Convert.ToInt32(GetSetting("PeriodLength").Value));
+                NewPeriodEnd = previousHolidayPeriod.End.AddDays(Convert.ToInt32(GetSetting("PeriodLength")));
             }
             else
             {
-                NewPeriodStart = new DateTime(DateTime.Now.Year, 1, 1);
-                NewPeriodEnd = new DateTime(DateTime.Now.Year, 12, 31);
+                var EndYear = DateTime.Now.Year;
+                int lastDayOfEndMonth = 31;
+                if (StartMonth > 1)
+                {
+                    EndMonth = StartMonth - 1;
+                    EndYear = DateTime.Now.Year + 1;
+                    lastDayOfEndMonth = DateTime.DaysInMonth(DateTime.Now.Year, EndMonth);
+                }
+                else
+                {
+                    EndMonth = 12;
+                }
+                NewPeriodStart = new DateTime(DateTime.Now.Year, EndMonth, 1);
+                NewPeriodEnd = new DateTime(EndYear, EndMonth, lastDayOfEndMonth);
             }
             _context.HolidayPeriods.Add(new HolidayPeriod()
             {
@@ -215,9 +242,9 @@ namespace HolidayTracker.Services
             OnDataUpdate(EventArgs.Empty);
         }
 
-        public Setting GetSetting(string Key)
+        public string GetSetting(string Key)
         {
-            return _context.Settings.FirstOrDefault(s => s.Key == Key);
+            return _context.Settings.FirstOrDefault(s => s.Key == Key).Value;
         }
 
         public void UpsertSetting(string Key, string Value)
@@ -257,6 +284,12 @@ namespace HolidayTracker.Services
             }
         }
 
+        public void AddPublicHoliday(PublicHoliday publicHoliday)
+        {
+            _context.PublicHolidays.Add(publicHoliday);
+            _context.Save();
+        }
+
         public IEnumerable<PublicHoliday> GetPublicHolidays(DateTime start, DateTime end)
         {
             return _context.PublicHolidays.Where(ph => ph.Date >= start && ph.Date <= end);
@@ -282,9 +315,16 @@ namespace HolidayTracker.Services
             if (!_context.Settings.Any())
             {
                 UpsertSetting("PeriodLength", "365");
-                UpsertSetting("WorkWeekends", "False");
-                UpsertSetting("WorkPublicHolidays", "False");
+                UpsertSetting("WorkWeekends", "false");
+                UpsertSetting("WorkPublicHolidays", "false");
+                UpsertSetting("HolidayPeriodStart", "4");
+                UpsertSetting("LastPublicHolidayUpdate", DateTime.Now.ToString());
             }
+        }
+
+        public List<HolidayPeriod> GetHolidayPeriods()
+        {
+            return _context.HolidayPeriods.ToList();
         }
     }
 }

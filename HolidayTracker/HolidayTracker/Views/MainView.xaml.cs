@@ -33,7 +33,7 @@ namespace HolidayTracker.Views
                 return;
 
             var page = (Page)Activator.CreateInstance(item.TargetType);
-            page.Title = item.Title;
+            //page.Title = item.Title;
 
             Detail = new NavigationPage(page);
             IsPresented = false;

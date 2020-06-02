@@ -35,9 +35,6 @@ namespace HolidayTracker.ViewModels
         public static void SetAutoWireViewModel(BindableObject bindable, bool value)
             => bindable.SetValue(AutoWireViewModelProperty, value);
 
-        //    public static void RegisterSingleton<TInterface, T>() where TInterface : class where T : class, TInterface
-        //=> Container.RegisterSingleton<TInterface, T>();
-
         public static T Resolve<T>() where T : class
             => kernel.Get<T>();
 

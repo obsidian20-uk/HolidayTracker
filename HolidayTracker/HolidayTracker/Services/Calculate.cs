@@ -46,7 +46,7 @@ namespace HolidayTracker.Services
             int NumWeekendDays = 0;
             int NumPublicHolidays = 0;
 
-            for (DateTime i = start; i < end; i = i.AddDays(1))
+            for (DateTime i = start; i <= end; i = i.AddDays(1))
             {
                 dates.Add(i);
             }
@@ -55,7 +55,7 @@ namespace HolidayTracker.Services
 
             if (!WorkWeekends)
             {
-                NumWeekendDays = dates.Where(d => d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday).Count();
+                NumWeekendDays = dates.Count(d => d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday);
                 NumDays -= NumWeekendDays;
             }
 

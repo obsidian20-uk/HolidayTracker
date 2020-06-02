@@ -8,48 +8,46 @@
              xmlns:base="clr-namespace:HolidayTracker.ViewModels;assembly=HolidayTracker"
              base:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title}" x:Name="MyHolidaysView">
-  <StackLayout Padding="10">
-        <Label TextColor="Green" FontSize="20" Text="{Binding currentHolidayPeriodText}"/>
-        <Label Text="{Binding NumDaysUsed}"/>
-        <CollectionView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays, Mode=TwoWay}" SelectionMode="Single">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.LeftItems>
-                            <SwipeItems Mode="Execute">
-                                <SwipeItem Text="Delete Holiday" BackgroundColor="PaleVioletRed" Command="{Binding Path=BindingContext.DeleteHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
-                            </SwipeItems>
-                        </SwipeView.LeftItems>
-                        <SwipeView.RightItems>
-                            <SwipeItems Mode="Execute">
-                                <SwipeItem Text="Edit" BackgroundColor="Yellow" Command="{Binding Path=BindingContext.EditHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="1"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="1"/>
-                            </Grid.ColumnDefinitions>
-                            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Black" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-                            <Label Text="{Binding Path=Description}" Grid.Row="1" Grid.Column="1"/>
-                            <Label Text="{Binding Path=HolidayDates}" Grid.Row="2" Grid.Column="1"/>
-                            <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Black" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
-
-                            <BoxView Grid.Column="0" Grid.Row="0" Grid.RowSpan="4"  BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
-                            <BoxView Grid.Column="2" Grid.Row="0" Grid.RowSpan="4"  BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
-                        </Grid>
-
-                    </SwipeView>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-
-        </CollectionView>
-    </StackLayout>
+    <ContentPage.Resources>
+        <Color x:Key="DarkButtonBackground">#921813</Color>
+        <Style x:Key="FABPrimary" TargetType="Button">
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="BackgroundColor" Value="{StaticResource DarkButtonBackground}"/>
+            <Setter Property="HeightRequest" Value="55"/>
+            <Setter Property="WidthRequest" Value="55"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+    </ContentPage.Resources>
+    <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <StackLayout Padding="10">
+            <Label TextColor="Green" FontSize="20" Text="{Binding currentHolidayPeriodText}"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="You have used"/>
+                <Label Text="{Binding NumDaysUsed}"/>
+                <Label Text="of"/>
+                <Label Text="{Binding CurrentHolidayPeriod.NumHolidays}"/>
+                <Label Text="days"/>
+            </StackLayout>
+            <ListView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays, Mode=TwoWay}" SelectionMode="Single" RowHeight="60">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=HolidayDates}">
+                            <TextCell.ContextActions>
+                                <MenuItem Text="Delete Holiday" Command="{Binding Path=BindingContext.DeleteHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
+                                <MenuItem Text="Edit" Command="{Binding Path=BindingContext.EditHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <Button x:Name="Add" Image="add.png"
+                Command="{Binding NewHoliday}" IsVisible="True"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
+                Style="{StaticResource FABPrimary}"  />
+    </AbsoluteLayout>
 </ContentPage>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="HolidayTracker.Views.HolidayPeriodView"
+             xmlns:base="clr-namespace:HolidayTracker.ViewModels;assembly=HolidayTracker" xmlns:services="clr-namespace:HolidayTracker.Services"
+             base:ViewModelLocator.AutoWireViewModel="true"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <services:StringToIntConverter x:Key="strToint" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Picker x:Name="HolidayPeriod" Title="Select a holiday period" ItemsSource="{Binding holidayPeriods}" ItemDisplayBinding="{Binding Display}" SelectedItem="{Binding CurrentHolidayPeriod, Mode=TwoWay}"  Grid.Row="0" Grid.ColumnSpan="2"/>
+        <Button Text="Change to selected holiday period" x:Name="ChangePeriod" Command="{Binding cmdChangePeriod}"  Grid.Row="1"  Grid.ColumnSpan="2"/>
+
+        <Label Text="Create new holiday period" Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="2"/>
+        <Label Text="Start Date" Grid.Column="0"  Grid.Row="3"/>
+        <DatePicker Date="{Binding Path=newHolidayPeriod.Start, Mode=OneWayToSource}" Grid.Column="1"  Grid.Row="3"/>
+        <Label Text="End Date" Grid.Column="0"  Grid.Row="4"/>
+        <DatePicker Date="{Binding Path=newHolidayPeriod.End, Mode=OneWayToSource}" Grid.Column="1"  Grid.Row="4"/>
+        <Label Text="Number of Days" Grid.Column="0"  Grid.Row="5"/>
+        <Entry Keyboard="Numeric" Text="{Binding Path=newHolidayPeriod.NumHolidays, Mode=OneWayToSource, Converter={StaticResource strToint}}" Grid.Row="5" Grid.Column="1"/>
+        <Button Text="Create new holiday period" Command="{Binding cmdCreateNewPeriod}" Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="6"/>
+        
+        <!--Label Text="Edit Current Holiday Period"  Grid.Row="7" Grid.ColumnSpan="2"/>
+        <Label Text="Start Date" Grid.Column="0"  Grid.Row="8"/>
+        <DatePicker Date="{Binding Path=CurrentHolidayPeriod.Start, Mode=TwoWay}" Grid.Column="1"  Grid.Row="8"/>
+        <Label Text="End Date" Grid.Column="0"  Grid.Row="9"/>
+        <DatePicker Date="{Binding Path=CurrentHolidayPeriod.End, Mode=TwoWay}" Grid.Column="1"  Grid.Row="9"/>
+        <Label Text="Number of Days" Grid.Column="0"  Grid.Row="10"/>
+        <Entry Keyboard="Numeric" Text="{Binding Path=CurrentHoliday.NumHolidays, Mode=TwoWay}" Grid.Row="10" Grid.Column="1"/>
+        <Button Text="Edit current holiday period" Command="{Binding EditHolidayPeriod}"  Grid.Row="11"  Grid.ColumnSpan="2"/>-->
+    </Grid>
+</ContentPage>
+
+<!--x:Name="MyCreateHolidayView"-->

@@ -18,12 +18,21 @@ namespace HolidayTracker.ViewModels
         {
             _DataAccessService = DataAccessService;
             CreateHolidayCommand = new Command<Holiday>(h => CreateHoliday(newHoliday));
+            Title = "Holiday Tracker - Create Holiday";
+
         }
         public Holiday newHoliday { get; set; } = new Holiday();
 
         public void CreateHoliday(Holiday holiday)
         {
-            _DataAccessService.CreateHoliday(holiday);
+            if (_DataAccessService.GetHolidayPeriod(holiday.End) != null || _DataAccessService.GetHolidayPeriod(holiday.Start) != null)
+            {
+                _DataAccessService.CreateHoliday(holiday);
+            }
+            else
+            {
+                DisplayAlert("Alert", "You cannot create holiday which is in holiday period you haven't created yet", "OK");
+            }
             //var mdp = Application.Current.MainPage as MasterDetailPage;
             //mdp.Detail..PopAsync();
 

@@ -9,19 +9,11 @@
              xmlns:base="clr-namespace:HolidayTracker.ViewModels;assembly=HolidayTracker"
              base:ViewModelLocator.AutoWireViewModel="true">
     <StackLayout>
-    <ListView x:Name="MenuItemsListView"
+        <ListView x:Name="MenuItemsListView"
               SeparatorVisibility="None"
               HasUnevenRows="true"
               ItemsSource="{Binding MenuItems}">
-      <d:ListView.ItemsSource>
-          <x:Array Type="{x:Type x:String}">
-              <x:String>Holidays List</x:String>
-              <x:String>Add New Holiday</x:String>
-              <x:String>Change Holiday Period</x:String>
-              <x:String>Settings</x:String>
-          </x:Array>
-      </d:ListView.ItemsSource>
-      <ListView.Header>
+            <ListView.Header>
         <Grid BackgroundColor="#03A9F4">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -37,7 +29,7 @@
           <Label
               Grid.Column="1"
               Grid.Row="2"
-              Text="AppName"
+              Text="Holiday Tracker"
               Style="{DynamicResource SubtitleStyle}"/>
         </Grid>
       </ListView.Header>

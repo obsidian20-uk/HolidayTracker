@@ -11,15 +11,26 @@ namespace HolidayTracker.Services
 
         void CreateHoliday(Holiday holiday);
         void CreateHolidayPeriod();
+
+        void CreateHolidayPeriod(HolidayPeriod newHolidayPeriod);
         void DeleteHoliday(Holiday holiday);
         IEnumerable<Holiday> GetAll();
         HolidayPeriod GetHolidayPeriod(int id);
 
         HolidayPeriod GetHolidayPeriod(DateTime date);
         IEnumerable<Holiday> GetHolidaysInPeriod(int holidayPeriodID);
-        Setting GetSetting(string Key);
+        string GetSetting(string Key);
         void UpdateHoliday(Holiday holiday);
         void UpsertSetting(string Key, string Value);
+
+        List<HolidayPeriod> GetHolidayPeriods();
+
+        void AddPublicHoliday(PublicHoliday publicHoliday);
+
+        IEnumerable<PublicHoliday> GetPublicHolidays(DateTime start, DateTime end);
+
+        bool CheckForHolidayPeriodOverlap(HolidayPeriod possibleHolidayPeriod);
+
 
         void CreateTestData();
 

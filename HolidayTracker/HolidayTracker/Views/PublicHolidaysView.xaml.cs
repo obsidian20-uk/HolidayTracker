@@ -1,5 +1,4 @@
 ﻿using HolidayTracker.Models;
-using HolidayTracker.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace HolidayTracker.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditHolidaysView : ContentPage
+    public partial class PublicHolidaysView : ContentPage
     {
-        public EditHolidaysView()
-        {
-            //this.BindingContext = new EditHolidaysViewModel(ref holiday);
+        private HolidayPeriod holidayPeriod;
 
+        public PublicHolidaysView()
+        {
             InitializeComponent();
         }
     }

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<pages:PopupPage
-    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -21,15 +20,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Text="Description" Grid.Column="0" Grid.Row="0"/>
-        <Entry x:Name="Description" Placeholder="Description" Text="{Binding Path=newHoliday.Description, Mode=TwoWay}" Grid.Column="1" Grid.Row="0"/>
+        <Entry x:Name="Description" Placeholder="Description" Text="{Binding Path=Holiday.Description, Mode=TwoWay}" Grid.Column="1" Grid.Row="0"/>
         
         <Label Text="Start of Holiday" Grid.Column="0" Grid.Row="1"/>
-        <DatePicker x:Name="StartDate" Date="{Binding Path=newHoliday.Start, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"/>
+        <DatePicker x:Name="StartDate" Date="{Binding Path=Holiday.Start, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"/>
 
         <Label Text="End of Holiday" Grid.Column="0" Grid.Row="2"/>
-        <DatePicker x:Name="EndDate" Date="{Binding Path=newHoliday.End, Mode=TwoWay}" MinimumDate="{Binding Path=newHoliday.Start, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
-        <Button Text="Edit Holiday" x:Name="Create" Command="{Binding EditHolidayCommand}" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"/>
+        <DatePicker x:Name="EndDate" Date="{Binding Path=Holiday.End, Mode=TwoWay}" MinimumDate="{Binding Path=Holiday.Start, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
+        <Button Text="Edit Holiday" x:Name="Edit" Command="{Binding EditHolidayCommand}" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"/>
     </Grid>
-</pages:PopupPage>
+</ContentPage>
 
 <!--x:Name="MyCreateHolidayView"-->

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HolidayTracker.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,16 @@ namespace HolidayTracker.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HolidaysView : ContentPage
     {
+        private HolidayPeriod holidayPeriod;
+
         public HolidaysView()
         {
             InitializeComponent();
+        }
+
+        public HolidaysView(HolidayPeriod holidayPeriod)
+        {
+            this.holidayPeriod = holidayPeriod;
         }
     }
 }

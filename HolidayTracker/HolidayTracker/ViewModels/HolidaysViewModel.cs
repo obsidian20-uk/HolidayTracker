@@ -4,7 +4,6 @@ using HolidayTracker.Services;
 using HolidayTracker.Views;
 using Microsoft.EntityFrameworkCore;
 using Ninject;
-using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -47,27 +46,31 @@ namespace HolidayTracker.ViewModels
             }
         }
 
+        public WebData webData;
+
         public Command<Holiday> DeleteHoliday { get; set; }
 
         public Command<Holiday> EditHoliday { get; set; }
+        public Command<Holiday> NewHoliday { get; set; }
 
         public HolidaysViewModel(IDataAccessService DataAccessService)
         {
             Title = "Holiday Tracker";
             _DataAccessService = DataAccessService;
             DeleteHoliday = new Command<Holiday>(holiday => _DataAccessService.DeleteHoliday(holiday));
-            EditHoliday = new Command<Holiday>(holiday => UpdateHoliday(holiday));
+            NewHoliday = new Command<Holiday>(holiday => NewHol());
+            EditHoliday = new Command<Holiday>(holiday => EditHol(holiday));
             _DataAccessService.Setup();
             CurrentHolidayPeriod = _DataAccessService.GetHolidayPeriod(DateTime.Now);
-            _DataAccessService.DataUpdate += Data_Changed;
-            Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID));
-            UpdateScreen();
-            currentHolidayPeriodText = CurrentHolidayPeriod.ToString();
-        }
-
-        private async void UpdateHoliday(Holiday holiday)
-        {
-            await PopupNavigation.PushAsync(new EditHolidaysView(holiday));
+            if (CurrentHolidayPeriod != null)
+            {
+                Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID));
+                UpdateScreen();
+                currentHolidayPeriodText = CurrentHolidayPeriod.ToString();
+                _DataAccessService.DataUpdate += Data_Changed;
+            }
+            webData = new WebData(_DataAccessService);
+            webData.UpdatePublicHolidays();
         }
 
         private void Data_Changed(object sender, EventArgs e)
@@ -75,10 +78,22 @@ namespace HolidayTracker.ViewModels
             UpdateScreen();
         }
 
+        private void EditHol(Holiday holiday)
+        {
+            ((App.Current.MainPage as MasterDetailPage).Detail as NavigationPage).Navigation.PushAsync(new EditHolidaysView());
+            MessagingCenter.Send(holiday, "EditHol");
+        }
+
+        private void NewHol()
+        {
+            ((App.Current.MainPage as MasterDetailPage).Detail as NavigationPage).Navigation.PushAsync(new CreateHolidaysView());
+        }
+
+
         private void UpdateScreen()
         {
-            Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID));
-            NumDaysUsed = Calculate.DaysUsed(CurrentHolidayPeriod.Holidays.ToList());
+            Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID).OrderBy(h => h.Start));
+            NumDaysUsed = Calculate.DaysUsed(Holidays.ToList());
         }
 
         public bool IsBusy { get; set; }
