@@ -7,6 +7,7 @@
              x:Class="HolidayTracker.Views.HolidaysView"
              xmlns:base="clr-namespace:HolidayTracker.ViewModels;assembly=HolidayTracker"
              base:ViewModelLocator.AutoWireViewModel="true"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
              Title="{Binding Title}" x:Name="MyHolidaysView">
     <ContentPage.Resources>
         <Color x:Key="DarkButtonBackground">#921813</Color>
@@ -23,14 +24,21 @@
     </ContentPage.Resources>
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
         <StackLayout Padding="10">
+
             <Label TextColor="Green" FontSize="20" Text="{Binding currentHolidayPeriodText}"/>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="You have used"/>
-                <Label Text="{Binding NumDaysUsed}"/>
-                <Label Text="of"/>
-                <Label Text="{Binding CurrentHolidayPeriod.NumHolidays}"/>
-                <Label Text="days"/>
-            </StackLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0">
+                    <Label Text="Number of days until next holiday"/>
+                    <Label Text="{Binding DaysToNext}"/>
+                </StackLayout>
+                <microcharts:ChartView x:Name="chartView" Chart="{Binding chartData}" Grid.Column="1"/>
+
+
+            </Grid>
             <ListView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays, Mode=TwoWay}" SelectionMode="Single" RowHeight="60">
                 <ListView.ItemTemplate>
                     <DataTemplate>

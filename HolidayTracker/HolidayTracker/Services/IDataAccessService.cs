@@ -10,8 +10,6 @@ namespace HolidayTracker.Services
         event EventHandler DataUpdate;
 
         void CreateHoliday(Holiday holiday);
-        void CreateHolidayPeriod();
-
         void CreateHolidayPeriod(HolidayPeriod newHolidayPeriod);
         void DeleteHoliday(Holiday holiday);
         IEnumerable<Holiday> GetAll();
@@ -31,9 +29,11 @@ namespace HolidayTracker.Services
 
         bool CheckForHolidayPeriodOverlap(HolidayPeriod possibleHolidayPeriod);
 
-
-        void CreateTestData();
-
         void Setup();
+
+        void TidyPublicHolidays();
+
+        List<Holiday> GetFutureHolidays();
+
     }
 }

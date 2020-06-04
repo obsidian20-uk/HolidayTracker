@@ -2,8 +2,10 @@
 using HolidayTracker.Modules;
 using HolidayTracker.Services;
 using HolidayTracker.Views;
+using Microcharts;
 using Microsoft.EntityFrameworkCore;
 using Ninject;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -53,6 +55,10 @@ namespace HolidayTracker.ViewModels
         public Command<Holiday> EditHoliday { get; set; }
         public Command<Holiday> NewHoliday { get; set; }
 
+        public int DaysToNext { get; set; }
+
+        public Chart chartData { get; set; } = new DonutChart();
+
         public HolidaysViewModel(IDataAccessService DataAccessService)
         {
             Title = "Holiday Tracker";
@@ -71,6 +77,7 @@ namespace HolidayTracker.ViewModels
             }
             webData = new WebData(_DataAccessService);
             webData.UpdatePublicHolidays();
+            DaysToNext = Calculate.DaysToNextHoliday(_DataAccessService.GetFutureHolidays());
         }
 
         private void Data_Changed(object sender, EventArgs e)
@@ -94,6 +101,23 @@ namespace HolidayTracker.ViewModels
         {
             Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID).OrderBy(h => h.Start));
             NumDaysUsed = Calculate.DaysUsed(Holidays.ToList());
+            var DaysLeft = CurrentHolidayPeriod.NumHolidays - NumDaysUsed;
+            chartData.BackgroundColor = SKColor.Empty;
+            chartData.Entries = new[]
+            {
+                new Microcharts.Entry(NumDaysUsed)
+                {
+                    Label = "Days Used",
+                    ValueLabel = NumDaysUsed.ToString(),
+                    Color = SKColor.Parse("#008000")
+                },
+                new Microcharts.Entry(DaysLeft)
+                {
+                    Label = "Days Left",
+                    ValueLabel = DaysLeft.ToString(),
+                    Color = SKColor.Parse("#FF6347")
+                }
+            };
         }
 
         public bool IsBusy { get; set; }

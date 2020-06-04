@@ -202,46 +202,6 @@ namespace HolidayTracker.Services
             OnDataUpdate(EventArgs.Empty);
         }
 
-        public void CreateHolidayPeriod()
-        {
-            var StartMonth = Convert.ToInt32(GetSetting("HolidayPeriodStart"));
-            int EndMonth;
-            DateTime NewPeriodStart;
-            DateTime NewPeriodEnd;
-
-            HolidayPeriod previousHolidayPeriod;
-            if (_context.HolidayPeriods.Any())
-            {
-                previousHolidayPeriod = _context.HolidayPeriods.OrderBy(hp => hp.End).Last();
-                NewPeriodStart = previousHolidayPeriod.End.AddDays(1);
-                NewPeriodEnd = previousHolidayPeriod.End.AddDays(Convert.ToInt32(GetSetting("PeriodLength")));
-            }
-            else
-            {
-                var EndYear = DateTime.Now.Year;
-                int lastDayOfEndMonth = 31;
-                if (StartMonth > 1)
-                {
-                    EndMonth = StartMonth - 1;
-                    EndYear = DateTime.Now.Year + 1;
-                    lastDayOfEndMonth = DateTime.DaysInMonth(DateTime.Now.Year, EndMonth);
-                }
-                else
-                {
-                    EndMonth = 12;
-                }
-                NewPeriodStart = new DateTime(DateTime.Now.Year, EndMonth, 1);
-                NewPeriodEnd = new DateTime(EndYear, EndMonth, lastDayOfEndMonth);
-            }
-            _context.HolidayPeriods.Add(new HolidayPeriod()
-            {
-                Start = NewPeriodStart,
-                End = NewPeriodEnd,
-                NumHolidays = 25
-            });
-            OnDataUpdate(EventArgs.Empty);
-        }
-
         public string GetSetting(string Key)
         {
             return _context.Settings.FirstOrDefault(s => s.Key == Key).Value;
@@ -290,41 +250,44 @@ namespace HolidayTracker.Services
             _context.Save();
         }
 
+        public void TidyPublicHolidays()
+        {
+            var all = _context.PublicHolidays;
+            _context.PublicHolidays.RemoveRange(all);
+            _context.Save();
+        }
+
         public IEnumerable<PublicHoliday> GetPublicHolidays(DateTime start, DateTime end)
         {
             return _context.PublicHolidays.Where(ph => ph.Date >= start && ph.Date <= end);
         }
 
-        public void CreateTestData()
-        {
-            Setup();
-            _context.HolidayPeriods.RemoveRange(_context.HolidayPeriods);
-            CreateHolidayPeriod();
-            var hol = new Holiday()
-            {
-                Description = "Test",
-                Start = DateTime.Now.Date,
-                End = DateTime.Now.AddDays(14),
-                Split = false
-            };
-            CreateHoliday(hol);
-        }
-
         public void Setup()
         {
-            if (!_context.Settings.Any())
+            Dictionary<string, string> Settings = new Dictionary<string, string>()
             {
-                UpsertSetting("PeriodLength", "365");
-                UpsertSetting("WorkWeekends", "false");
-                UpsertSetting("WorkPublicHolidays", "false");
-                UpsertSetting("HolidayPeriodStart", "4");
-                UpsertSetting("LastPublicHolidayUpdate", DateTime.Now.ToString());
+            {"WorkWeekends", "false"},
+            {"WorkPublicHolidays", "false"},
+            {"LastPublicHolidayUpdate", DateTime.Now.ToString()},
+                {"Country", "Eng"}
+            };
+            foreach (var Setting in Settings)
+            {
+                if (!_context.Settings.Any(s => s.Key == Setting.Key))
+                {
+                    UpsertSetting(Setting.Key, Setting.Value);
+                }
             }
         }
 
         public List<HolidayPeriod> GetHolidayPeriods()
         {
             return _context.HolidayPeriods.ToList();
+        }
+
+        public List<Holiday> GetFutureHolidays()
+        {
+            return GetAll().OrderBy(h => h.Start).Where(h => h.Start >= DateTime.Today).ToList();
         }
     }
 }

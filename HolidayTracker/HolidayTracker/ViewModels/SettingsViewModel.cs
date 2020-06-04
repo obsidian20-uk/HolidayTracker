@@ -4,6 +4,7 @@ using HolidayTracker.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Xamarin.Forms;
@@ -22,6 +23,10 @@ namespace HolidayTracker.ViewModels
 
         public Command<HolidayPeriod> cmdUpdatePublicHolidays { get; set; }
 
+        public KeyValuePair<string, string> Country { get; set; }
+
+        public List<KeyValuePair<string, string>> Countries { get; set; } = Global.Countries.ToList();
+
         public SettingsViewModel(IDataAccessService DataAccessService)
         {
             _DataAccessService = DataAccessService;
@@ -34,6 +39,7 @@ namespace HolidayTracker.ViewModels
 
         private void UpdatePublicHolidays()
         {
+            _DataAccessService.UpsertSetting("Country", Country.Key);
             var webData = new WebData(_DataAccessService);
             webData.UpdatePublicHolidays(true);
             App.Current.MainPage = new MainView(new HolidaysView());

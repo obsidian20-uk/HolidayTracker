@@ -16,7 +16,7 @@
         <Label Text="SETTINGS WILL ONLY APPLY TO HOLIDAYS CREATED OR EDITED FROM THIS POINT"/>
 
         <Button Text="Update Settings" Command="{Binding cmdUpdateSettings}"/>
-
+        <Picker Title="Country" ItemsSource="{Binding Countries}" ItemDisplayBinding="{Binding Value}" SelectedItem="{Binding Country}"/>
         <Button Text="Update Public Holidays" Command="{Binding cmdUpdatePublicHolidays}"/>
 
     </StackLayout>

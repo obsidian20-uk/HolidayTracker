@@ -17,7 +17,7 @@ namespace HolidayTracker.ViewModels
         {
             Title = "Holiday Tracker - Public Holidays";
             DataAccessService = dataAccessService;
-            PublicHolidays = DataAccessService.GetPublicHolidays(DateTime.MinValue, DateTime.MaxValue).ToList();
+            PublicHolidays = DataAccessService.GetPublicHolidays(DateTime.MinValue, DateTime.MaxValue).OrderBy(H => H.Date).ToList();
         }
 
         public List<PublicHoliday> PublicHolidays { get; set; }

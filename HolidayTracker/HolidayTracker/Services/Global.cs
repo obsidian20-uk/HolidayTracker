@@ -21,5 +21,13 @@ namespace HolidayTracker.Services
             kernel.Load(Assembly.GetExecutingAssembly());
             return kernel;
         }
+
+        public static Dictionary<string, string> Countries = new Dictionary<string, string>()
+        {
+            {"Eng", "England"},
+            {"Wal", "Wales"},
+            {"NRL", "Northern Ireland"},
+            {"Scot", "Scotland"}
+        };
     }
 }
