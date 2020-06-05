@@ -166,6 +166,11 @@ namespace HolidayTracker.Services
             return Global.CurrentHolidayPeriod;
         }
 
+        public bool CheckHolidayPeriodExists(DateTime date)
+        {
+            return _context.HolidayPeriods.Include(hp => hp.Holidays).Any(hp => hp.Start <= date && hp.End >= date);
+        }
+
         public bool CheckForHolidayPeriodOverlap(HolidayPeriod possibleHolidayPeriod)
         {
             foreach (var holidayPeriod in _context.HolidayPeriods)

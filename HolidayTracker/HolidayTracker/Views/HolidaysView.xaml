@@ -19,30 +19,47 @@
             <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
             <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
             <Setter Property="Padding" Value="15"/>
-            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Margin" Value="0,0,15,15"/>
         </Style>
     </ContentPage.Resources>
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-        <StackLayout Padding="10">
-
-            <Label TextColor="Green" FontSize="20" Text="{Binding currentHolidayPeriodText}"/>
+        <StackLayout>
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Grid.RowSpan="2" Source="header_background.jpg" Aspect="Fill" />
+                <Label TextColor="#FFF600" FontSize="20" Text="{Binding currentHolidayPeriodText}" Grid.Row="0" HorizontalTextAlignment="Center"/>
+            <Grid HeightRequest="100" Grid.Row="1" IsVisible="{Binding PeriodCreated}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width=".3*"/>
+                    <ColumnDefinition Width="0.55*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackLayout Grid.Column="0">
-                    <Label Text="Number of days until next holiday"/>
-                    <Label Text="{Binding DaysToNext}"/>
-                </StackLayout>
-                <microcharts:ChartView x:Name="chartView" Chart="{Binding chartData}" Grid.Column="1"/>
-
-
+                    <StackLayout Grid.Column="0" IsVisible="{Binding AnyFutureHols}">
+                        <Label Text="Days til next holiday" FontSize="15" HorizontalTextAlignment="Center" Padding="2" TextColor="Black" FontAttributes="Bold" />
+                        <Label HorizontalTextAlignment="Center" TextColor="Black" Padding="5">
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                <Setter Property="Text" Value="{Binding DaysToNext}" />
+                                <Setter Property="FontSize" Value="40" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DaysToNext, Mode=OneWay}" Value="999" TargetType="Label">
+                                            <Setter Property="Text" Value="Infinite, you need to book some" />
+                                            <Setter Property="FontSize" Value="17" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                    </StackLayout>
+                <microcharts:ChartView Chart="{Binding chartData}" Grid.Column="1" Margin="0.0"/>
             </Grid>
-            <ListView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays, Mode=TwoWay}" SelectionMode="Single" RowHeight="60">
+            </Grid>
+            <ListView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays, Mode=TwoWay}" SelectionMode="Single" RowHeight="60"  IsVisible="{Binding PeriodCreated}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=HolidayDates}">
+                        <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=HolidayDates}" TextColor="Blue" DetailColor="BlueViolet">
                             <TextCell.ContextActions>
                                 <MenuItem Text="Delete Holiday" Command="{Binding Path=BindingContext.DeleteHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
                                 <MenuItem Text="Edit" Command="{Binding Path=BindingContext.EditHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
@@ -51,9 +68,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Label IsVisible="{Binding PeriodNotCreated}" Text="Holiday period not created." HorizontalTextAlignment="Center" FontSize="20"/>
+            <Label IsVisible="{Binding PeriodNotCreated}" Text="Choose Holiday Period option from menu to create" HorizontalTextAlignment="Center" FontSize="20"/>
         </StackLayout>
-        <Button x:Name="Add" Image="add.png"
-                Command="{Binding NewHoliday}" IsVisible="True"
+        <Button x:Name="Add" Image="add.png" 
+                Command="{Binding NewHoliday}" IsVisible="{Binding PeriodCreated}"
                 AbsoluteLayout.LayoutFlags="PositionProportional"
                 AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
                 Style="{StaticResource FABPrimary}"  />

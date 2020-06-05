@@ -35,7 +35,11 @@ namespace HolidayTracker.Views
             var page = (Page)Activator.CreateInstance(item.TargetType);
             //page.Title = item.Title;
 
-            Detail = new NavigationPage(page);
+            Detail = new NavigationPage(page)
+            {
+                BarBackgroundColor = Color.FromHex("#007AD0"),
+                BarTextColor = Color.Black
+        };
             IsPresented = false;
 
             MasterPage.ListView.SelectedItem = null;

@@ -9,11 +9,16 @@
              base:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title}">
     <StackLayout>
-        <Label Text="Work Weekends?"/>
-        <Switch IsToggled="{Binding WorkWeekends, Mode=TwoWay}"/>
-        <Label Text="Work Public Holidays?"/>
-        <Switch IsToggled="{Binding WorkPublicHolidays, Mode=TwoWay}"/>
-        <Label Text="SETTINGS WILL ONLY APPLY TO HOLIDAYS CREATED OR EDITED FROM THIS POINT"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Work Weekends?" HorizontalOptions="StartAndExpand"/>
+        <Switch IsToggled="{Binding WorkWeekends, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Work Public Holidays?"  HorizontalOptions="StartAndExpand"/>
+            <Switch IsToggled="{Binding WorkPublicHolidays, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
+        </StackLayout>
+
+        <Label Text="SETTINGS WILL ONLY APPLY TO HOLIDAYS CREATED OR EDITED FROM THIS POINT" HorizontalTextAlignment="Center"/>
 
         <Button Text="Update Settings" Command="{Binding cmdUpdateSettings}"/>
         <Picker Title="Country" ItemsSource="{Binding Countries}" ItemDisplayBinding="{Binding Value}" SelectedItem="{Binding Country}"/>

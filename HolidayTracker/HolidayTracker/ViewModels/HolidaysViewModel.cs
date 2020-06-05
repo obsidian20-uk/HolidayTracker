@@ -49,19 +49,31 @@ namespace HolidayTracker.ViewModels
         }
 
         public WebData webData;
+        private int daysToNext;
 
         public Command<Holiday> DeleteHoliday { get; set; }
 
         public Command<Holiday> EditHoliday { get; set; }
         public Command<Holiday> NewHoliday { get; set; }
 
-        public int DaysToNext { get; set; }
+        public int DaysToNext
+        {
+            get => daysToNext; set
+            {
+                daysToNext = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public Chart chartData { get; set; } = new DonutChart();
+        public DonutChart chartData { get; set; } = new DonutChart();
+
+        public bool PeriodCreated { get; set; }
+
+        public bool PeriodNotCreated { get { return !PeriodCreated; } }
 
         public HolidaysViewModel(IDataAccessService DataAccessService)
         {
-            Title = "Holiday Tracker";
+            Title = "Not in Work";
             _DataAccessService = DataAccessService;
             DeleteHoliday = new Command<Holiday>(holiday => _DataAccessService.DeleteHoliday(holiday));
             NewHoliday = new Command<Holiday>(holiday => NewHol());
@@ -72,12 +84,8 @@ namespace HolidayTracker.ViewModels
             {
                 Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID));
                 UpdateScreen();
-                currentHolidayPeriodText = CurrentHolidayPeriod.ToString();
-                _DataAccessService.DataUpdate += Data_Changed;
             }
-            webData = new WebData(_DataAccessService);
-            webData.UpdatePublicHolidays();
-            DaysToNext = Calculate.DaysToNextHoliday(_DataAccessService.GetFutureHolidays());
+
         }
 
         private void Data_Changed(object sender, EventArgs e)
@@ -103,21 +111,40 @@ namespace HolidayTracker.ViewModels
             NumDaysUsed = Calculate.DaysUsed(Holidays.ToList());
             var DaysLeft = CurrentHolidayPeriod.NumHolidays - NumDaysUsed;
             chartData.BackgroundColor = SKColor.Empty;
+            chartData.GraphPosition = Microcharts.Layouts.GraphPosition.AutoFill;
+            chartData.LabelMode = Microcharts.Layouts.LabelMode.RightOnly;
+            chartData.LabelTextSize = 40;
             chartData.Entries = new[]
             {
                 new Microcharts.Entry(NumDaysUsed)
                 {
-                    Label = "Days Used",
+                    Label = "Days Booked",
                     ValueLabel = NumDaysUsed.ToString(),
-                    Color = SKColor.Parse("#008000")
+                    Color = SKColor.Parse("#00FF00"),
+                    TextColor = SKColor.Parse("#FFF600")
                 },
                 new Microcharts.Entry(DaysLeft)
                 {
                     Label = "Days Left",
                     ValueLabel = DaysLeft.ToString(),
-                    Color = SKColor.Parse("#FF6347")
+                    Color = SKColor.Parse("#FF0000"),
+                    TextColor = SKColor.Parse("#FFF600")
                 }
             };
+            currentHolidayPeriodText = CurrentHolidayPeriod.ToString();
+            _DataAccessService.DataUpdate += Data_Changed;
+            var FutureHols = _DataAccessService.GetFutureHolidays();
+            if (FutureHols.Any())
+            {
+                DaysToNext = Calculate.DaysToNextHoliday(FutureHols);
+            }
+            else
+            {
+                DaysToNext = 999;
+            }
+            webData = new WebData(_DataAccessService);
+            webData.UpdatePublicHolidays();
+            PeriodCreated = (CurrentHolidayPeriod != null);
         }
 
         public bool IsBusy { get; set; }

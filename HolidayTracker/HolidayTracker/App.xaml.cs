@@ -22,17 +22,5 @@ namespace HolidayTracker
 
             InitializeComponent();
         }
-
-        protected override void OnStart()
-        {
-        }
-
-        protected override void OnSleep()
-        {
-        }
-
-        protected override void OnResume()
-        {
-        }
     }
 }

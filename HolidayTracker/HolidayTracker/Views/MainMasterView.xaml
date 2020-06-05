@@ -14,24 +14,28 @@
               HasUnevenRows="true"
               ItemsSource="{Binding MenuItems}">
             <ListView.Header>
-        <Grid BackgroundColor="#03A9F4">
+        <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
           </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
-          </Grid.RowDefinitions>
-          <Label
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+            
+                    <Image Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="3"  Source="header_background.jpg" Aspect="Fill" />
+
+                    <Label
               Grid.Column="1"
               Grid.Row="2"
-              Text="Holiday Tracker"
+              Text="Not in Work"
+                        FontSize="40"
               Style="{DynamicResource SubtitleStyle}"/>
-        </Grid>
+                </Grid>
       </ListView.Header>
       <ListView.ItemTemplate>
         <DataTemplate>

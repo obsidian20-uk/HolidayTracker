@@ -34,7 +34,7 @@ namespace HolidayTracker.ViewModels
             cmdUpdatePublicHolidays = new Command<HolidayPeriod>(h => UpdatePublicHolidays());
             WorkWeekends = bool.Parse(_DataAccessService.GetSetting("WorkWeekends"));
             WorkPublicHolidays = bool.Parse(_DataAccessService.GetSetting("WorkPublicHolidays"));
-            Title = "Holiday Tracker - Settings";
+            Title = "Not in Work - Settings";
         }
 
         private void UpdatePublicHolidays()

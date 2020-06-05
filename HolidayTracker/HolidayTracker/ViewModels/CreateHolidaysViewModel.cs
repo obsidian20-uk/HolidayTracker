@@ -18,25 +18,25 @@ namespace HolidayTracker.ViewModels
         {
             _DataAccessService = DataAccessService;
             CreateHolidayCommand = new Command<Holiday>(h => CreateHoliday(newHoliday));
-            Title = "Holiday Tracker - Create Holiday";
+            Title = "Not in Work - Create Holiday";
 
         }
         public Holiday newHoliday { get; set; } = new Holiday();
 
         public void CreateHoliday(Holiday holiday)
         {
-            if (_DataAccessService.GetHolidayPeriod(holiday.End) != null || _DataAccessService.GetHolidayPeriod(holiday.Start) != null)
+            if (!_DataAccessService.CheckHolidayPeriodExists(holiday.End) || !_DataAccessService.CheckHolidayPeriodExists(holiday.Start))
             {
-                _DataAccessService.CreateHoliday(holiday);
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current.MainPage.DisplayAlert("Holiday period does not exist", "You cannot create holiday which is in holiday period you haven't created yet", "OK");
+                });
             }
             else
             {
-                DisplayAlert("Alert", "You cannot create holiday which is in holiday period you haven't created yet", "OK");
+                _DataAccessService.CreateHoliday(holiday);
+                App.Current.MainPage = new MainView(new HolidaysView());
             }
-            //var mdp = Application.Current.MainPage as MasterDetailPage;
-            //mdp.Detail..PopAsync();
-
-            App.Current.MainPage = new MainView(new HolidaysView());
         }
     }
 }

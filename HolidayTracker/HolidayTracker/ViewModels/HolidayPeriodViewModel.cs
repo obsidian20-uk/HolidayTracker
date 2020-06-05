@@ -37,7 +37,7 @@ namespace HolidayTracker.ViewModels
             //cmdEditCurrentPeriod = new Command<HolidayPeriod>(hp => EditCurrentPeriod());
 
             cmdCreateNewPeriod = new Command<HolidayPeriod>(hp => CreatePeriod(newHolidayPeriod));
-            Title = "Holiday Tracker - Holiday Periods";
+            Title = "Not in Work - Holiday Periods";
 
         }
 
@@ -65,19 +65,20 @@ namespace HolidayTracker.ViewModels
 
         public void CreatePeriod(HolidayPeriod newHolidayPeriod)
         {
-            if (!_DataAccessService.CheckForHolidayPeriodOverlap(newHolidayPeriod))
+            if (_DataAccessService.CheckForHolidayPeriodOverlap(newHolidayPeriod))
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current.MainPage.DisplayAlert("Holiday period overlap", "Holiday period overlaps with existing one", "OK");
+                });
+            }
+            else
             {
                 var webData = new WebData(_DataAccessService);
                 webData.UpdatePublicHolidays(true);
                 _DataAccessService.CreateHolidayPeriod(newHolidayPeriod);
                 App.Current.MainPage = new MainView(new HolidaysView());
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                await App.Current.MainPage.DisplayAlert("Alert", "Holiday period overlaps with existing one","OK");
-                });
+
             }
         }
     }

@@ -25,7 +25,6 @@ namespace HolidayTracker.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Microcharts.Droid.Resource.String.library_name = global::HolidayTracker.Droid.Resource.String.library_name;
 			global::Xamarin.Essentials.Resource.Attribute.alpha = global::HolidayTracker.Droid.Resource.Attribute.alpha;
 			global::Xamarin.Essentials.Resource.Attribute.coordinatorLayoutStyle = global::HolidayTracker.Droid.Resource.Attribute.coordinatorLayoutStyle;
 			global::Xamarin.Essentials.Resource.Attribute.font = global::HolidayTracker.Droid.Resource.Attribute.font;
@@ -8305,67 +8304,67 @@ namespace HolidayTracker.Droid
 			public const int design_snackbar_background = 2131165282;
 			
 			// aapt resource value: 0x7F070063
-			public const int ic_mtrl_chip_checked_black = 2131165283;
+			public const int header_background = 2131165283;
 			
 			// aapt resource value: 0x7F070064
-			public const int ic_mtrl_chip_checked_circle = 2131165284;
+			public const int ic_mtrl_chip_checked_black = 2131165284;
 			
 			// aapt resource value: 0x7F070065
-			public const int ic_mtrl_chip_close_circle = 2131165285;
+			public const int ic_mtrl_chip_checked_circle = 2131165285;
 			
 			// aapt resource value: 0x7F070066
-			public const int mtrl_snackbar_background = 2131165286;
+			public const int ic_mtrl_chip_close_circle = 2131165286;
 			
 			// aapt resource value: 0x7F070067
-			public const int mtrl_tabs_default_indicator = 2131165287;
+			public const int mtrl_snackbar_background = 2131165287;
 			
 			// aapt resource value: 0x7F070068
-			public const int navigation_empty_icon = 2131165288;
+			public const int mtrl_tabs_default_indicator = 2131165288;
 			
 			// aapt resource value: 0x7F070069
-			public const int notification_action_background = 2131165289;
+			public const int navigation_empty_icon = 2131165289;
 			
 			// aapt resource value: 0x7F07006A
-			public const int notification_bg = 2131165290;
+			public const int notification_action_background = 2131165290;
 			
 			// aapt resource value: 0x7F07006B
-			public const int notification_bg_low = 2131165291;
+			public const int notification_bg = 2131165291;
 			
 			// aapt resource value: 0x7F07006C
-			public const int notification_bg_low_normal = 2131165292;
+			public const int notification_bg_low = 2131165292;
 			
 			// aapt resource value: 0x7F07006D
-			public const int notification_bg_low_pressed = 2131165293;
+			public const int notification_bg_low_normal = 2131165293;
 			
 			// aapt resource value: 0x7F07006E
-			public const int notification_bg_normal = 2131165294;
+			public const int notification_bg_low_pressed = 2131165294;
 			
 			// aapt resource value: 0x7F07006F
-			public const int notification_bg_normal_pressed = 2131165295;
+			public const int notification_bg_normal = 2131165295;
 			
 			// aapt resource value: 0x7F070070
-			public const int notification_icon_background = 2131165296;
+			public const int notification_bg_normal_pressed = 2131165296;
 			
 			// aapt resource value: 0x7F070071
-			public const int notification_template_icon_bg = 2131165297;
+			public const int notification_icon_background = 2131165297;
 			
 			// aapt resource value: 0x7F070072
-			public const int notification_template_icon_low_bg = 2131165298;
+			public const int notification_template_icon_bg = 2131165298;
 			
 			// aapt resource value: 0x7F070073
-			public const int notification_tile_bg = 2131165299;
+			public const int notification_template_icon_low_bg = 2131165299;
 			
 			// aapt resource value: 0x7F070074
-			public const int notify_panel_notification_icon_bg = 2131165300;
+			public const int notification_tile_bg = 2131165300;
 			
 			// aapt resource value: 0x7F070075
-			public const int tooltip_frame_dark = 2131165301;
+			public const int notify_panel_notification_icon_bg = 2131165301;
 			
 			// aapt resource value: 0x7F070076
-			public const int tooltip_frame_light = 2131165302;
+			public const int tooltip_frame_dark = 2131165302;
 			
 			// aapt resource value: 0x7F070077
-			public const int xamarin_logo = 2131165303;
+			public const int tooltip_frame_light = 2131165303;
 			
 			static Drawable()
 			{
@@ -9323,14 +9322,14 @@ namespace HolidayTracker.Droid
 		public partial class Mipmap
 		{
 			
-			// aapt resource value: 0x7F0C0000
-			public const int icon = 2131492864;
-			
 			// aapt resource value: 0x7F0C0001
-			public const int icon_round = 2131492865;
+			public const int icon = 2131492865;
 			
 			// aapt resource value: 0x7F0C0002
-			public const int launcher_foreground = 2131492866;
+			public const int icon_round = 2131492866;
+			
+			// aapt resource value: 0x7F0C0000
+			public const int ic_launcher = 2131492864;
 			
 			static Mipmap()
 			{
@@ -9484,31 +9483,28 @@ namespace HolidayTracker.Droid
 			public const int hide_bottom_view_on_scroll_behavior = 2131558445;
 			
 			// aapt resource value: 0x7F0D002E
-			public const int library_name = 2131558446;
+			public const int mtrl_chip_close_icon_content_description = 2131558446;
 			
 			// aapt resource value: 0x7F0D002F
-			public const int mtrl_chip_close_icon_content_description = 2131558447;
+			public const int password_toggle_content_description = 2131558447;
 			
 			// aapt resource value: 0x7F0D0030
-			public const int password_toggle_content_description = 2131558448;
+			public const int path_password_eye = 2131558448;
 			
 			// aapt resource value: 0x7F0D0031
-			public const int path_password_eye = 2131558449;
+			public const int path_password_eye_mask_strike_through = 2131558449;
 			
 			// aapt resource value: 0x7F0D0032
-			public const int path_password_eye_mask_strike_through = 2131558450;
+			public const int path_password_eye_mask_visible = 2131558450;
 			
 			// aapt resource value: 0x7F0D0033
-			public const int path_password_eye_mask_visible = 2131558451;
+			public const int path_password_strike_through = 2131558451;
 			
 			// aapt resource value: 0x7F0D0034
-			public const int path_password_strike_through = 2131558452;
+			public const int search_menu_title = 2131558452;
 			
 			// aapt resource value: 0x7F0D0035
-			public const int search_menu_title = 2131558453;
-			
-			// aapt resource value: 0x7F0D0036
-			public const int status_bar_notification_info_overflow = 2131558454;
+			public const int status_bar_notification_info_overflow = 2131558453;
 			
 			static String()
 			{

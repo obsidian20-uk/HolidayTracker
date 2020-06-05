@@ -40,7 +40,7 @@ namespace HolidayTracker.ViewModels
                 Holiday = holiday;
             });
             EditHolidayCommand = new Command<Holiday>(h => UpdateHoliday(Holiday));
-            Title = "Holiday Tracker - Edit Holiday";
+            Title = "Not in Work - Edit Holiday";
 
         }
 

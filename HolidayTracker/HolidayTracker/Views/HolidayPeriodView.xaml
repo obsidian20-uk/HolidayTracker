@@ -39,7 +39,7 @@
         <Label Text="Start Date" Grid.Column="0"  Grid.Row="3"/>
         <DatePicker Date="{Binding Path=newHolidayPeriod.Start, Mode=OneWayToSource}" Grid.Column="1"  Grid.Row="3"/>
         <Label Text="End Date" Grid.Column="0"  Grid.Row="4"/>
-        <DatePicker Date="{Binding Path=newHolidayPeriod.End, Mode=OneWayToSource}" Grid.Column="1"  Grid.Row="4"/>
+        <DatePicker Date="{Binding Path=newHolidayPeriod.End, Mode=TwoWay}" MinimumDate="{Binding Path=newHolidayPeriod.Start}" Grid.Column="1"  Grid.Row="4"/>
         <Label Text="Number of Days" Grid.Column="0"  Grid.Row="5"/>
         <Entry Keyboard="Numeric" Text="{Binding Path=newHolidayPeriod.NumHolidays, Mode=OneWayToSource, Converter={StaticResource strToint}}" Grid.Row="5" Grid.Column="1"/>
         <Button Text="Create new holiday period" Command="{Binding cmdCreateNewPeriod}" Grid.ColumnSpan="2" Grid.Column="0"  Grid.Row="6"/>
