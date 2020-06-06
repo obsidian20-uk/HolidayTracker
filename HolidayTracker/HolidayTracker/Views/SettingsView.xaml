@@ -10,19 +10,19 @@
              Title="{Binding Title}">
     <StackLayout>
         <StackLayout Orientation="Horizontal">
-            <Label Text="Work Weekends?" HorizontalOptions="StartAndExpand"/>
+            <Label Text="Work Weekends?" HorizontalOptions="StartAndExpand"  Padding="5"/>
         <Switch IsToggled="{Binding WorkWeekends, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
-            <Label Text="Work Public Holidays?"  HorizontalOptions="StartAndExpand"/>
+            <Label Text="Work Public Holidays?"  HorizontalOptions="StartAndExpand" Padding="5"/>
             <Switch IsToggled="{Binding WorkPublicHolidays, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
         </StackLayout>
 
         <Label Text="SETTINGS WILL ONLY APPLY TO HOLIDAYS CREATED OR EDITED FROM THIS POINT" HorizontalTextAlignment="Center"/>
 
-        <Button Text="Update Settings" Command="{Binding cmdUpdateSettings}"/>
+        <Button Text="Update Settings" Command="{Binding cmdUpdateSettings}" Padding="5"/>
         <Picker Title="Country" ItemsSource="{Binding Countries}" ItemDisplayBinding="{Binding Value}" SelectedItem="{Binding Country}"/>
-        <Button Text="Update Public Holidays" Command="{Binding cmdUpdatePublicHolidays}"/>
+        <Button Text="Update Public Holidays" Command="{Binding cmdUpdatePublicHolidays}" Padding="5"/>
 
     </StackLayout>
 </ContentPage>

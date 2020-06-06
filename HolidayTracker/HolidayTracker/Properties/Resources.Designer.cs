@@ -73,9 +73,9 @@ namespace HolidayTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] icon {
+        internal static byte[] logo {
             get {
-                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((byte[])(obj));
             }
         }

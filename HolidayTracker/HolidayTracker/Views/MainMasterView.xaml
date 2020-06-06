@@ -12,9 +12,9 @@
         <ListView x:Name="MenuItemsListView"
               SeparatorVisibility="None"
               HasUnevenRows="true"
-              ItemsSource="{Binding MenuItems}">
+              ItemsSource="{Binding MenuItems}" BackgroundColor="#FFFFE3">
             <ListView.Header>
-        <Grid>
+                <Grid BackgroundColor="#ECFFFB">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
@@ -24,17 +24,14 @@
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="80"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="10"/>
+                        <RowDefinition Height="5"/>
                     </Grid.RowDefinitions>
-            
-                    <Image Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="3"  Source="header_background.jpg" Aspect="Fill" />
+                    <Image Grid.Row="1" Grid.Column="1" Source="logo.png" Aspect="AspectFit"/>
+                    <Label Grid.Column="1" Grid.Row="3" Text="Not in Work" FontSize="40" Style="{DynamicResource SubtitleStyle}" HorizontalTextAlignment="Center"/>
+              <BoxView Grid.Row="5" Grid.ColumnSpan="3" BackgroundColor="Blue" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
 
-                    <Label
-              Grid.Column="1"
-              Grid.Row="2"
-              Text="Not in Work"
-                        FontSize="40"
-              Style="{DynamicResource SubtitleStyle}"/>
                 </Grid>
       </ListView.Header>
       <ListView.ItemTemplate>

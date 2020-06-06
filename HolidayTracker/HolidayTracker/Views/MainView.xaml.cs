@@ -37,7 +37,7 @@ namespace HolidayTracker.Views
 
             Detail = new NavigationPage(page)
             {
-                BarBackgroundColor = Color.FromHex("#007AD0"),
+                BarBackgroundColor = Color.FromHex("#ECFFFB"),
                 BarTextColor = Color.Black
         };
             IsPresented = false;

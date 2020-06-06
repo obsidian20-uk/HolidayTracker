@@ -25,9 +25,9 @@
         <ListView x:Name="HolidaysCollectionView" ItemsSource="{Binding PublicHolidays, Mode=OneTime}" SelectionMode="None"  RowHeight="60">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                    <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=DateDisplay}">
-                    </TextCell>
-                    </DataTemplate>
+                    <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=DateDisplay}" TextColor="Blue" DetailColor="#1D97C1"/>
+
+                </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>

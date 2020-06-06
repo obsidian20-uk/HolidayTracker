@@ -120,15 +120,15 @@ namespace HolidayTracker.ViewModels
                 {
                     Label = "Days Booked",
                     ValueLabel = NumDaysUsed.ToString(),
-                    Color = SKColor.Parse("#00FF00"),
-                    TextColor = SKColor.Parse("#FFF600")
+                    Color = SKColor.Parse("#006400"),
+                    TextColor = SKColor.Parse("#000000")
                 },
                 new Microcharts.Entry(DaysLeft)
                 {
                     Label = "Days Left",
                     ValueLabel = DaysLeft.ToString(),
                     Color = SKColor.Parse("#FF0000"),
-                    TextColor = SKColor.Parse("#FFF600")
+                    TextColor = SKColor.Parse("#000000")
                 }
             };
             currentHolidayPeriodText = CurrentHolidayPeriod.ToString();

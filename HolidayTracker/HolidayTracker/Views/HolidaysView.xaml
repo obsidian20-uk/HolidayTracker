@@ -10,7 +10,7 @@
              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
              Title="{Binding Title}" x:Name="MyHolidaysView">
     <ContentPage.Resources>
-        <Color x:Key="DarkButtonBackground">#921813</Color>
+        <Color x:Key="DarkButtonBackground">Green</Color>
         <Style x:Key="FABPrimary" TargetType="Button">
             <Setter Property="CornerRadius" Value="100"/>
             <Setter Property="BackgroundColor" Value="{StaticResource DarkButtonBackground}"/>
@@ -24,25 +24,25 @@
     </ContentPage.Resources>
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
         <StackLayout>
-            <Grid>
+            <Grid BackgroundColor="#FFFFE3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="5"/>
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Grid.RowSpan="2" Source="header_background.jpg" Aspect="Fill" />
-                <Label TextColor="#FFF600" FontSize="20" Text="{Binding currentHolidayPeriodText}" Grid.Row="0" HorizontalTextAlignment="Center"/>
-            <Grid HeightRequest="100" Grid.Row="1" IsVisible="{Binding PeriodCreated}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.55*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <Label TextColor="#000000" FontSize="20" Text="{Binding currentHolidayPeriodText}" Grid.Row="0" HorizontalTextAlignment="Center"/>
+                <Grid HeightRequest="100" Grid.Row="1" IsVisible="{Binding PeriodCreated}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.55*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <StackLayout Grid.Column="0" IsVisible="{Binding AnyFutureHols}">
                         <Label Text="Days til next holiday" FontSize="15" HorizontalTextAlignment="Center" Padding="2" TextColor="Black" FontAttributes="Bold" />
                         <Label HorizontalTextAlignment="Center" TextColor="Black" Padding="5">
                             <Label.Style>
                                 <Style TargetType="Label">
-                                <Setter Property="Text" Value="{Binding DaysToNext}" />
-                                <Setter Property="FontSize" Value="40" />
+                                    <Setter Property="Text" Value="{Binding DaysToNext}" />
+                                    <Setter Property="FontSize" Value="40" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding DaysToNext, Mode=OneWay}" Value="999" TargetType="Label">
                                             <Setter Property="Text" Value="Infinite, you need to book some" />
@@ -53,13 +53,14 @@
                             </Label.Style>
                         </Label>
                     </StackLayout>
-                <microcharts:ChartView Chart="{Binding chartData}" Grid.Column="1" Margin="0.0"/>
-            </Grid>
+                    <microcharts:ChartView Chart="{Binding chartData}" Grid.Column="1" Margin="0.0"/>
+                </Grid>
+                <BoxView Grid.Row="2" BackgroundColor="#F6E4AD" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
             </Grid>
             <ListView x:Name="HolidaysCollectionView" ItemsSource="{Binding Holidays, Mode=TwoWay}" SelectionMode="Single" RowHeight="60"  IsVisible="{Binding PeriodCreated}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=HolidayDates}" TextColor="Blue" DetailColor="BlueViolet">
+                        <TextCell Text="{Binding Path=Description}" Detail="{Binding Path=HolidayDates}" TextColor="Blue" DetailColor="#1D97C1">
                             <TextCell.ContextActions>
                                 <MenuItem Text="Delete Holiday" Command="{Binding Path=BindingContext.DeleteHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>
                                 <MenuItem Text="Edit" Command="{Binding Path=BindingContext.EditHoliday, Source={x:Reference Name=MyHolidaysView}}" CommandParameter="{Binding .}"/>

@@ -12,7 +12,7 @@
         <pages:MainMasterView x:Name="MasterPage" />
   </MasterDetailPage.Master>
   <MasterDetailPage.Detail>
-        <NavigationPage BarBackgroundColor="#007AD0" BarTextColor="Black">
+        <NavigationPage BarBackgroundColor="#ECFFFB" BarTextColor="Black">
       <x:Arguments>
                 <pages:HolidaysView />
             </x:Arguments>
