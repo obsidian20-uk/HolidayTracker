@@ -29,7 +29,7 @@
                         <RowDefinition Height="5"/>
                     </Grid.RowDefinitions>
                     <Image Grid.Row="1" Grid.Column="1" Source="logo.png" Aspect="AspectFit"/>
-                    <Label Grid.Column="1" Grid.Row="3" Text="Not in Work" FontSize="40" Style="{DynamicResource SubtitleStyle}" HorizontalTextAlignment="Center"/>
+                    <Label Grid.Column="1" Grid.Row="3" Text="Not in Work" FontSize="Title" Style="{DynamicResource SubtitleStyle}" HorizontalTextAlignment="Center"/>
               <BoxView Grid.Row="5" Grid.ColumnSpan="3" BackgroundColor="Blue" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
 
                 </Grid>
@@ -42,7 +42,7 @@
                     VerticalTextAlignment="Center" 
                     Text="{Binding Title}" 
                     d:Text="{Binding .}"
-                    FontSize="24"/>
+                    FontSize="Title"/>
             </StackLayout>
           </ViewCell>
         </DataTemplate>

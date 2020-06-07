@@ -23,6 +23,8 @@ namespace HolidayTracker.ViewModels
         private ObservableCollection<Holiday> holidays;
         private int numDaysUsed;
 
+        private int daysLeft;
+
         public string currentHolidayPeriodText { get; set; }
 
         public ObservableCollection<Holiday> Holidays
@@ -47,6 +49,18 @@ namespace HolidayTracker.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public int DaysLeft
+        {
+            get => daysLeft;
+            set
+            {
+                daysLeft = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public float XLFont { get; set; } = (float)Device.GetNamedSize(NamedSize.Large, typeof(Label)) * 2;
 
         public WebData webData;
         private int daysToNext;
@@ -109,11 +123,10 @@ namespace HolidayTracker.ViewModels
         {
             Holidays = new ObservableCollection<Holiday>(_DataAccessService.GetHolidaysInPeriod(CurrentHolidayPeriod.ID).OrderBy(h => h.Start));
             NumDaysUsed = Calculate.DaysUsed(Holidays.ToList());
-            var DaysLeft = CurrentHolidayPeriod.NumHolidays - NumDaysUsed;
+            DaysLeft = CurrentHolidayPeriod.NumHolidays - NumDaysUsed;
             chartData.BackgroundColor = SKColor.Empty;
             chartData.GraphPosition = Microcharts.Layouts.GraphPosition.AutoFill;
-            chartData.LabelMode = Microcharts.Layouts.LabelMode.RightOnly;
-            chartData.LabelTextSize = 40;
+            chartData.LabelMode = Microcharts.Layouts.LabelMode.None;
             chartData.Entries = new[]
             {
                 new Microcharts.Entry(NumDaysUsed)
@@ -121,14 +134,12 @@ namespace HolidayTracker.ViewModels
                     Label = "Days Booked",
                     ValueLabel = NumDaysUsed.ToString(),
                     Color = SKColor.Parse("#006400"),
-                    TextColor = SKColor.Parse("#000000")
                 },
                 new Microcharts.Entry(DaysLeft)
                 {
                     Label = "Days Left",
                     ValueLabel = DaysLeft.ToString(),
                     Color = SKColor.Parse("#FF0000"),
-                    TextColor = SKColor.Parse("#000000")
                 }
             };
             currentHolidayPeriodText = CurrentHolidayPeriod.ToString();

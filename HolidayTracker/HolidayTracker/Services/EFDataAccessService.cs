@@ -39,7 +39,7 @@ namespace HolidayTracker.Services
         public void CreateHoliday(Holiday holiday)
         {
             var publicHolidays = _context.PublicHolidays.Where(ph => ph.Date >= holiday.Start && ph.Date <= holiday.End).ToList();
-            var firstHolidayPeriod = _context.HolidayPeriods.OrderByDescending(hp => hp.Start).FirstOrDefault(hp => hp.Start < holiday.Start);
+            var firstHolidayPeriod = _context.HolidayPeriods.OrderByDescending(hp => hp.Start).FirstOrDefault(hp => hp.Start <= holiday.Start);
 
             var newHolidayGUID = Guid.NewGuid();
 
@@ -168,7 +168,7 @@ namespace HolidayTracker.Services
 
         public bool CheckHolidayPeriodExists(DateTime date)
         {
-            return _context.HolidayPeriods.Include(hp => hp.Holidays).Any(hp => hp.Start <= date && hp.End >= date);
+            return _context.HolidayPeriods.Any(hp => hp.Start.Date <= date.Date && hp.End.Date >= date.Date);
         }
 
         public bool CheckForHolidayPeriodOverlap(HolidayPeriod possibleHolidayPeriod)
