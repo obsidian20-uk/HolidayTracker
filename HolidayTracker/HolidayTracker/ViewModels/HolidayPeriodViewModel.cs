@@ -1,4 +1,5 @@
-﻿using HolidayTracker.Models;
+﻿using Android.OS;
+using HolidayTracker.Models;
 using HolidayTracker.Services;
 using HolidayTracker.Views;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -47,22 +48,6 @@ namespace HolidayTracker.ViewModels
             App.Current.MainPage = new MainView(new HolidaysView());
         }
 
-        //public void EditCurrentPeriod()
-        //{
-        //    if (CurrentHolidayPeriod.Holidays.Any())
-        //    {
-        //        Device.BeginInvokeOnMainThread(async () =>
-        //        {
-        //            await App.Current.MainPage.DisplayAlert("Alert", "Holiday period overlaps with existing one", "OK");
-        //        });
-        //    }
-        //    else
-        //    {
-        //        _DataAccessService.holi
-        //    }
-        //    App.Current.MainPage = new MainView(new HolidaysView());
-        //}
-
         public void CreatePeriod(HolidayPeriod newHolidayPeriod)
         {
             if (_DataAccessService.CheckForHolidayPeriodOverlap(newHolidayPeriod))
@@ -72,13 +57,19 @@ namespace HolidayTracker.ViewModels
                     await App.Current.MainPage.DisplayAlert("Holiday period overlap", "Holiday period overlaps with existing one", "OK");
                 });
             }
+            else if (newHolidayPeriod.NumHolidays <= 0)
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current.MainPage.DisplayAlert("Number of Days missing", "You need to provide a number of days for holiday period", "OK");
+                });
+            }
             else
             {
                 var webData = new WebData(_DataAccessService);
                 webData.UpdatePublicHolidays(true);
                 _DataAccessService.CreateHolidayPeriod(newHolidayPeriod);
                 App.Current.MainPage = new MainView(new HolidaysView());
-
             }
         }
     }

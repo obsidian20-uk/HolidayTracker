@@ -37,7 +37,7 @@ namespace HolidayTracker.Services
 
         public static int DaysToNextHoliday(IEnumerable<Holiday> holidays)
         {
-            return holidays.OrderBy(h => h.Start).FirstOrDefault(h => h.Start > DateTime.Now).Start.Subtract(DateTime.Now).Days;
+            return holidays.OrderBy(h => h.Start).FirstOrDefault(h => h.Start >= DateTime.Today).Start.Subtract(DateTime.Now).Days;
         }
 
         public static int NumDaysInHoliday(DateTime start, DateTime end, List<PublicHoliday> publicHolidays, bool WorkWeekends = false, bool WorkPublicHolidays = false)
