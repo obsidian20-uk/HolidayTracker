@@ -175,30 +175,20 @@ namespace HolidayTracker.Services
         {
             foreach (var holidayPeriod in _context.HolidayPeriods)
             {
-                if ((holidayPeriod.Start < possibleHolidayPeriod.Start && holidayPeriod.End > possibleHolidayPeriod.Start) || (holidayPeriod.Start < possibleHolidayPeriod.End && holidayPeriod.End > possibleHolidayPeriod.End))
+                if ((holidayPeriod.Start <= possibleHolidayPeriod.Start && holidayPeriod.End >= possibleHolidayPeriod.Start) || (holidayPeriod.Start <= possibleHolidayPeriod.End && holidayPeriod.End >= possibleHolidayPeriod.End))
                     return true;
             }
             return false;
         }
 
+        public bool CheckForHolidayOverlap(Holiday possibleHoliday)
+        {
+            return GetAll().Any(holiday => (holiday.Start <= possibleHoliday.Start && holiday.End >= possibleHoliday.Start) || (holiday.Start <= possibleHoliday.End && holiday.End >= possibleHoliday.End));
+        }
+
         public HolidayPeriod GetHolidayPeriod(int id)
         {
             return _context.HolidayPeriods.FirstOrDefault(hp => hp.ID == id);
-        }
-
-        private void CreateHolidayPeriod(DateTime PeriodStart, DateTime PeriodEnd, int PeriodNumHolidays = 0)
-        {
-            if (PeriodNumHolidays == 0)
-            {
-                PeriodNumHolidays = Convert.ToInt32(GetSetting("NumHolidays"));
-            }
-            _context.HolidayPeriods.Add(new HolidayPeriod()
-            {
-                Start = PeriodStart,
-                End = PeriodEnd,
-                NumHolidays = PeriodNumHolidays
-            });
-            OnDataUpdate(EventArgs.Empty);
         }
 
         public void CreateHolidayPeriod(HolidayPeriod newHolidayPeriod)
