@@ -32,7 +32,6 @@ namespace HolidayTracker.ViewModels
                     await App.Current.MainPage.DisplayAlert("Holiday period does not exist", "You cannot create holiday which is in holiday period you haven't created yet", "OK");
                 });
             }
-            else if ()
             else
             {
                 _DataAccessService.CreateHoliday(holiday);

@@ -37,7 +37,7 @@ namespace HolidayTracker.Services
 
         bool CheckHolidayPeriodExists(DateTime date);
 
-        bool CheckForHolidayOverlap(Holiday possibleHoliday)
+        bool CheckForHolidayOverlap(Holiday possibleHoliday);
 
     }
 }
